@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                         String  @id @default(uuid()) @db.Uuid
+  activity_goal_contribution Json?
+  nudge_category_model       Json?
+  nudge_channel_model        Json?
+  activity_model             Json?
+  Nudge                      Nudge[]
+
+  @@map("users")
+}
+
+model Nudge {
+  id            String   @id @default(uuid()) @db.Uuid
+  user_id       String   @db.Uuid
+  activity_id   String   @db.Uuid
+  category_id   String   @db.Uuid
+  channel_id    String   @db.Uuid
+  effectiveness Int
+  datetime      DateTime 
+  updated_at    DateTime @updatedAt
+  created_at    DateTime @default(now())
+  User          User     @relation(references: [id], fields: [user_id])
+  Activity      Activity @relation(references: [id], fields: [activity_id])
+  Category      Category @relation(references: [id], fields: [category_id])
+  Channel       Channel  @relation(references: [id], fields: [channel_id])
+
+  @@map("nudges")
+}
+
+model Activity {
+  id    String  @id @default(uuid()) @db.Uuid
+  name  String
+  Nudge Nudge[]
+
+  @@map("activities")
+}
+
+model Category {
+  id    String  @id @default(uuid()) @db.Uuid
+  name  String
+  Nudge Nudge[]
+
+  @@map("categories")
+}
+
+model Channel {
+  id    String  @id @default(uuid()) @db.Uuid
+  name  String
+  Nudge Nudge[]
+
+  @@map("channels")
+}
