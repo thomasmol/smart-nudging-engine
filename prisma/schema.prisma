@@ -11,40 +11,44 @@ datasource db {
 }
 
 model User {
-  id                         String  @id @default(uuid()) @db.Uuid
-  activity_goal_contribution Json?
-  nudge_category_model       Json?
-  nudge_channel_model        Json?
-  activity_model             Json?
-  Nudge                      Nudge[]
+  id                       String                     @id @default(uuid()) @db.Uuid
+  nudge_category_model     Json?
+  nudge_channel_model      Json?
+  activity_model           Json?
+  Nudge                    Nudge[]
+  ActivityGoalContribution ActivityGoalContribution[]
 
   @@map("users")
 }
 
 model Nudge {
-  id            String   @id @default(uuid()) @db.Uuid
-  user_id       String   @db.Uuid
-  activity_id   String   @db.Uuid
-  category_id   String   @db.Uuid
-  channel_id    String   @db.Uuid
-  effectiveness Int
-  datetime      DateTime 
-  updated_at    DateTime @updatedAt
-  created_at    DateTime @default(now())
-  User          User     @relation(references: [id], fields: [user_id])
-  Activity      Activity @relation(references: [id], fields: [activity_id])
-  Category      Category @relation(references: [id], fields: [category_id])
-  Channel       Channel  @relation(references: [id], fields: [channel_id])
+  id                     String       @id @default(uuid()) @db.Uuid
+  user_id                String       @db.Uuid
+  activity_type_id       String       @db.Uuid
+  category_id            String       @db.Uuid
+  channel_id             String       @db.Uuid
+  timeframe_id           String       @db.Uuid
+  effectiveness          Int
+  present_datetime       DateTime     @db.Timestamptz()
+  reaction_wait_datetime DateTime     @db.Timestamptz()
+  updated_at             DateTime     @updatedAt @db.Timestamptz()
+  created_at             DateTime     @default(now()) @db.Timestamptz()
+  User                   User         @relation(references: [id], fields: [user_id])
+  ActivityType           ActivityType @relation(references: [id], fields: [activity_type_id])
+  Category               Category     @relation(references: [id], fields: [category_id])
+  Channel                Channel      @relation(references: [id], fields: [channel_id])
+  Timeframe              Timeframe    @relation(references: [id], fields: [timeframe_id])
 
   @@map("nudges")
 }
 
-model Activity {
-  id    String  @id @default(uuid()) @db.Uuid
-  name  String
-  Nudge Nudge[]
+model ActivityType {
+  id                       String                     @id @default(uuid()) @db.Uuid
+  name                     String
+  Nudge                    Nudge[]
+  ActivityGoalContribution ActivityGoalContribution[]
 
-  @@map("activities")
+  @@map("activity_types")
 }
 
 model Category {
@@ -61,4 +65,25 @@ model Channel {
   Nudge Nudge[]
 
   @@map("channels")
+}
+
+model Timeframe {
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  start_time DateTime @db.Time()
+  end_time   DateTime @db.Time()
+  Nudge      Nudge[]
+
+  @@map("timeframes")
+}
+
+model ActivityGoalContribution {
+  id               String @id @default(uuid()) @db.Uuid
+  user_id          String @db.Uuid
+  activity_type_id String @db.Uuid
+
+  User         User         @relation(references: [id], fields: [user_id])
+  ActivityType ActivityType @relation(references: [id], fields: [activity_type_id])
+
+  @@map("activity_goal_contributions")
 }

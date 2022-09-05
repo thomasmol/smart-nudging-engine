@@ -8,7 +8,6 @@ const main = async () => {
 	for (let i = 0; i < 10; i++) {
 		await prisma.user.create({
 			data: {
-				activity_goal_contribution: faker.datatype.json(),
 				nudge_category_model: faker.datatype.json(),
 				nudge_channel_model: faker.datatype.json(),
 				activity_model: faker.datatype.json()
