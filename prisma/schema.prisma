@@ -10,7 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
+model Nudgee {
   id                       String                     @id @default(uuid()) @db.Uuid
   nudge_category_model     Json?
   nudge_channel_model      Json?
@@ -18,12 +18,12 @@ model User {
   Nudge                    Nudge[]
   ActivityGoalContribution ActivityGoalContribution[]
 
-  @@map("users")
+  @@map("nudgees")
 }
 
 model Nudge {
   id                     String       @id @default(uuid()) @db.Uuid
-  user_id                String       @db.Uuid
+  nudgee_id              String       @db.Uuid
   activity_type_id       String       @db.Uuid
   category_id            String       @db.Uuid
   channel_id             String       @db.Uuid
@@ -33,7 +33,7 @@ model Nudge {
   reaction_wait_datetime DateTime     @db.Timestamptz()
   updated_at             DateTime     @updatedAt @db.Timestamptz()
   created_at             DateTime     @default(now()) @db.Timestamptz()
-  User                   User         @relation(references: [id], fields: [user_id])
+  Nudgee                 Nudgee       @relation(references: [id], fields: [nudgee_id])
   ActivityType           ActivityType @relation(references: [id], fields: [activity_type_id])
   Category               Category     @relation(references: [id], fields: [category_id])
   Channel                Channel      @relation(references: [id], fields: [channel_id])
@@ -79,10 +79,11 @@ model Timeframe {
 
 model ActivityGoalContribution {
   id               String @id @default(uuid()) @db.Uuid
-  user_id          String @db.Uuid
+  nudgee_id        String @db.Uuid
   activity_type_id String @db.Uuid
+  contribution     Int
 
-  User         User         @relation(references: [id], fields: [user_id])
+  Nudgee       Nudgee       @relation(references: [id], fields: [nudgee_id])
   ActivityType ActivityType @relation(references: [id], fields: [activity_type_id])
 
   @@map("activity_goal_contributions")

@@ -2,15 +2,34 @@ import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
 import { channels } from './seeds/channels';
 import { categories } from './seeds/categories';
+import { activityTypes } from './seeds/activityTypes';
+import { timeFrames } from './seeds/timeFrames';
 const prisma = new PrismaClient();
 
 const main = async () => {
+	
+	for (const activityType of activityTypes) {
+		await prisma.activityType.create({
+			data: activityType
+		});
+	}
 	for (let i = 0; i < 10; i++) {
-		await prisma.user.create({
+		await prisma.nudgee.create({
 			data: {
 				nudge_category_model: faker.datatype.json(),
 				nudge_channel_model: faker.datatype.json(),
 				activity_model: faker.datatype.json()
+			}
+		}).then(async (nudgee) =>{
+			const allActivityTypes = await prisma.activityType.findMany();
+			for(const activityType of allActivityTypes){
+				await prisma.activityGoalContribution.create({
+					data: {
+						nudgee_id: nudgee.id,
+						activity_type_id: activityType.id,
+						contribution: faker.datatype.number({min:0, max:10})
+					}
+				})
 			}
 		});
 	}
@@ -22,6 +41,11 @@ const main = async () => {
 	for (const category of categories) {
 		await prisma.category.create({
 			data: category
+		});
+	}	
+	for (const timeFrame of timeFrames) {
+		await prisma.timeframe.create({
+			data: timeFrame
 		});
 	}
 };

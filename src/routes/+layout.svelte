@@ -1,8 +1,10 @@
 <script>
 	import '../app.css';
+	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
+	import { page } from '$app/stores';
 </script>
 
-<nav class="shadow-xlshadow-zinc-100 rounded-2xl bg-white text-slate-500 border-b mb-4">
+<nav class="shadow-xlshadow-zinc-100 border-b bg-white text-slate-500">
 	<div class="justify-left container flex space-x-10 ">
 		<h1 class="py-4 text-center text-xl font-bold text-slate-700">NaaS</h1>
 		<div class="flex font-semibold">
@@ -14,5 +16,9 @@
 		</div>
 	</div>
 </nav>
+
+<div class="container">
+	<Breadcrumb path={$page.url.pathname} />
+</div>
 
 <slot />
