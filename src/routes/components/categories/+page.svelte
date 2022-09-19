@@ -5,14 +5,14 @@
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
-			<h1 class="mb-2 text-xl font-semibold text-slate-800">Activity types</h1>
-			<h2 class="text-slate-700">A list of all activity types</h2>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Categories</h1>
+			<h2 class="text-slate-700">A list of all nudge categories</h2>
 		</div>
 		<div class="">
 			<a
 				href="/components/activity-types/create"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-				>Add activity type</a>
+				>Add Category</a>
 		</div>
 	</div>
 
@@ -27,14 +27,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.activityTypes as activityType}
+				{#each data.categories as category}
 					<tr class="border-b bg-white ">
-						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
-							{activityType.name}
+						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
+							{category.name}
 						</th>
 						<td class="py-4 px-6"> ? </td>
 						<td class="py-4 px-6">
-							<a href="nudgees/edit?id={activityType.id}" class="text-blue-600 hover:underline">edit</a>
+							<a href="nudgees/edit?id={category.id}" class="text-blue-600 hover:underline">edit</a>
 						</td>
 					</tr>
 				{/each}

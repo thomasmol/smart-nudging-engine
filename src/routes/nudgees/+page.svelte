@@ -1,7 +1,6 @@
 <script lang="ts">
-  export let data :any;
+	export let data: any;
 </script>
-
 
 <div class="container">
 	<div class="mb-4 flex justify-between">
@@ -18,9 +17,8 @@
 	</div>
 
 	<div class="relative overflow-x-auto rounded-lg border">
-		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-			<thead
-				class="border-b bg-gray-50 text-sm uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+		<table class="w-full text-left text-sm text-gray-500 ">
+			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700 ">
 				<tr class="">
 					<th scope="col" class="py-3 px-6"> Id </th>
 					<th scope="col" class="py-3 px-6"> Metadata </th>
@@ -28,21 +26,17 @@
 				</tr>
 			</thead>
 			<tbody>
-        {#each data.nudgees as nudgee }
-          <tr class="border-b bg-white dark:border-gray-700 dark:bg-gray-800">
-					<th
-						scope="row"
-						class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 dark:text-white">
-						{nudgee.id}
-					</th>
-					<td class="py-4 px-6"> ? </td>
-					<td class="py-4 px-6">
-						<a href="nudgees/edit?id={nudgee.id}" class="text-blue-600 hover:underline">edit</a>
-					</td>
-				</tr>
-        {/each}
-				
-			
+				{#each data.nudgees as nudgee}
+					<tr class="border-b bg-white ">
+						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
+							{nudgee.id}
+						</th>
+						<td class="py-4 px-6"> ? </td>
+						<td class="py-4 px-6">
+							<a href="nudgees/edit?id={nudgee.id}" class="text-blue-600 hover:underline">edit</a>
+						</td>
+					</tr>
+				{/each}
 			</tbody>
 		</table>
 	</div>

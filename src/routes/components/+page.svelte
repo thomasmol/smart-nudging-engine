@@ -1,4 +1,5 @@
 <div class="container flex flex-wrap gap-8">
+	
 	<a href="components/activity-types" class="rounded-lg border bg-white ">
 		<div class="flex gap-4 p-4">
 			<h2 class="text-xl font-semibold">Activity Types</h2>
@@ -6,23 +7,23 @@
 		</div>
 		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
 	</a>
-	<a href="components/activity-types" class="rounded-lg border bg-white ">
+	<a href="components/timeframes" class="rounded-lg border bg-white ">
 		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Activity Types</h2>
+			<h2 class="text-xl font-semibold">Timeframes</h2>
 			<h3 class="text-sm text-zinc-700">230 no.</h3>
 		</div>
 		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
 	</a>
-	<a href="components/activity-types" class="rounded-lg border bg-white ">
+	<a href="components/categories" class="rounded-lg border bg-white ">
 		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Activity Types</h2>
+			<h2 class="text-xl font-semibold">Categories</h2>
 			<h3 class="text-sm text-zinc-700">230 no.</h3>
 		</div>
 		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
 	</a>
-	<a href="components/activity-types" class="rounded-lg border bg-white ">
+	<a href="components/channels" class="rounded-lg border bg-white ">
 		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Activity Types</h2>
+			<h2 class="text-xl font-semibold">Channels</h2>
 			<h3 class="text-sm text-zinc-700">230 no.</h3>
 		</div>
 		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
