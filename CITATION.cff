@@ -10,3 +10,7 @@ authors:
     family-names: Mol
     email: email@thomasmol.com
     affiliation: Utrecht University
+version: 0.1
+date-released: "2022-09-19"
+license: Apache-2.0
+repository-code: "https://github.com/ThomasMol/smart-nudging-engine"
