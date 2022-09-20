@@ -6,7 +6,7 @@
 	<div class="mb-4 flex justify-between">
 		<div>
 			<h1 class="mb-2 text-xl font-semibold text-slate-800">Timeframes</h1>
-			<h2 class="text-slate-700">A list of all nuge timeframes</h2>
+			<h2 class="text-slate-700">A list of all nudge timeframes</h2>
 		</div>
 		<div class="">
 			<a

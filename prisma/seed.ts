@@ -4,6 +4,7 @@ import { channels } from './seeds/channels';
 import { categories } from './seeds/categories';
 import { activityTypes } from './seeds/activityTypes';
 import { timeFrames } from './seeds/timeFrames';
+import { configurations } from './seeds/configurations';
 const prisma = new PrismaClient();
 
 const main = async () => {
@@ -46,6 +47,11 @@ const main = async () => {
 	for (const timeFrame of timeFrames) {
 		await prisma.timeframe.create({
 			data: timeFrame
+		});
+	}
+	for (const configuration of configurations) {
+		await prisma.configuration.create({
+			data: configuration
 		});
 	}
 };

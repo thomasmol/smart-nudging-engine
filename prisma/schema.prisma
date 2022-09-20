@@ -88,3 +88,13 @@ model ActivityGoalContribution {
 
   @@map("activity_goal_contributions")
 }
+
+model Configuration {
+  id                 String   @id @default(uuid()) @db.Uuid
+  name               String
+  algorithm          String
+  reaction_wait_time Int
+  start_time         DateTime @db.Timestamptz()
+
+  @@map("configurations")
+}
