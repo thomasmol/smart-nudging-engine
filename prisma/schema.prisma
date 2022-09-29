@@ -22,22 +22,24 @@ model Nudgee {
 }
 
 model Nudge {
-  id                     String       @id @default(uuid()) @db.Uuid
-  nudgee_id              String       @db.Uuid
-  activity_type_id       String       @db.Uuid
-  category_id            String       @db.Uuid
-  channel_id             String       @db.Uuid
-  timeframe_id           String       @db.Uuid
+  id                     String        @id @default(uuid()) @db.Uuid
+  nudgee_id              String        @db.Uuid
+  activity_type_id       String        @db.Uuid
+  category_id            String        @db.Uuid
+  channel_id             String        @db.Uuid
+  timeframe_id           String        @db.Uuid
+  configuration_id       String        @db.Uuid
   effectiveness          Int
-  present_datetime       DateTime     @db.Timestamptz()
-  reaction_wait_datetime DateTime     @db.Timestamptz()
-  updated_at             DateTime     @updatedAt @db.Timestamptz()
-  created_at             DateTime     @default(now()) @db.Timestamptz()
-  Nudgee                 Nudgee       @relation(references: [id], fields: [nudgee_id])
-  ActivityType           ActivityType @relation(references: [id], fields: [activity_type_id])
-  Category               Category     @relation(references: [id], fields: [category_id])
-  Channel                Channel      @relation(references: [id], fields: [channel_id])
-  Timeframe              Timeframe    @relation(references: [id], fields: [timeframe_id])
+  present_datetime       DateTime      @db.Timestamptz()
+  reaction_wait_datetime DateTime      @db.Timestamptz()
+  updated_at             DateTime      @updatedAt @db.Timestamptz()
+  created_at             DateTime      @default(now()) @db.Timestamptz()
+  Nudgee                 Nudgee        @relation(references: [id], fields: [nudgee_id])
+  ActivityType           ActivityType  @relation(references: [id], fields: [activity_type_id])
+  Category               Category      @relation(references: [id], fields: [category_id])
+  Channel                Channel       @relation(references: [id], fields: [channel_id])
+  Timeframe              Timeframe     @relation(references: [id], fields: [timeframe_id])
+  Configuration          Configuration @relation(references: [id], fields: [configuration_id])
 
   @@map("nudges")
 }
@@ -95,6 +97,8 @@ model Configuration {
   algorithm          String
   reaction_wait_time Int
   start_time         DateTime @db.Timestamptz()
+
+  Nudge Nudge[]
 
   @@map("configurations")
 }

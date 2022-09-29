@@ -21,38 +21,34 @@
 		</div>
 
 		<div class="rounded-lg border bg-white ">
-			<div class="gap-4 p-4">
-				<h2 class="text-xl font-semibold">{data.configuration.name}</h2>
+			<div class="p-4">
+				<header class="flex justify-between">
+					<h2 class="text-xl font-semibold">{data.configuration.name}</h2>
+					{#if new Date() > data.configuration.start_time}
+						<div class="inline-flex  rounded  px-4 py-2 font-semibold text-slate-600">
+							<svg
+								class="-ml-1 mr-3 h-5 w-5 animate-spin text-slate-600"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 24 24">
+								<circle
+									class="opacity-25"
+									cx="12"
+									cy="12"
+									r="10"
+									stroke="currentColor"
+									stroke-width="4" />
+								<path
+									class="opacity-75"
+									fill="currentColor"
+									d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+							</svg>Running
+						</div>
+					{/if}
+				</header>
 				<p class="">Algo: {data.configuration.algorithm}</p>
 				<p>Reaction wait time: {data.configuration.reaction_wait_time}</p>
-				<p>Start time: {data.configuration.start_time}</p>
-			</div>
-			<div class="rounded-b-lg bg-slate-50 p-4 ">
-				{#if new Date() > data.configuration.start_time}
-					<button
-						href="/"
-						class="inline-flex cursor-not-allowed rounded bg-slate-500 px-4 py-2 font-semibold text-white"
-						disabled
-						><svg
-							class="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-							xmlns="http://www.w3.org/2000/svg"
-							fill="none"
-							viewBox="0 0 24 24">
-							<circle
-								class="opacity-25"
-								cx="12"
-								cy="12"
-								r="10"
-								stroke="currentColor"
-								stroke-width="4" />
-							<path
-								class="opacity-75"
-								fill="currentColor"
-								d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-						</svg>Running</button>
-				{:else}
-					<a href="/" class="rounded bg-slate-500 px-4 py-2 font-semibold text-white">Start</a>
-				{/if}
+				<p>Start time: {new Date(data.configuration.start_time).toLocaleString('nl-NL')}</p>
 			</div>
 		</div>
 	</section>

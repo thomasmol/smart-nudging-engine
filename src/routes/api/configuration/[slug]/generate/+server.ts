@@ -26,6 +26,7 @@ export async function GET({ url }) {
 			category_id: category.id,
 			channel_id: channel.id,
 			timeframe_id: timeframe.id,
+			configuration_id: configuration?.id,
 			effectiveness: 0,
 			present_datetime: timeframe.start_time,
 			reaction_wait_datetime: presentDatetime
