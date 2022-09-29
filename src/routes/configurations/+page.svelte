@@ -51,6 +51,7 @@
 					{:else}
 						<a href="/" class="rounded bg-slate-500 px-4 py-2 font-semibold text-white">Start</a>
 					{/if}
+            <a href="/configurations/{configuration.id}" class="rounded  bg-slate-100 px-4 py-2 font-semibold hover:bg-slate-200 text-slate-500">View more</a>
 				</div>
 			</div>
 		{/each}
