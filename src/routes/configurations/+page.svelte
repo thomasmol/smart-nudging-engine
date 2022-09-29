@@ -10,7 +10,7 @@
 		</div>
 		<div class="">
 			<a
-				href="/"
+				href="/configurations"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
 				>Add new configuration</a>
 		</div>

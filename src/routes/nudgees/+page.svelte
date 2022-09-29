@@ -10,7 +10,7 @@
 		</div>
 		<div class="">
 			<a
-				href="/components/activity-types/create"
+				href="/nudgees"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
 				>Add Nudgee</a>
 		</div>

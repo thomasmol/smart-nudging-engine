@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import {error} from '@sveltejs/kit';
 const prisma = new PrismaClient();
 
 /** @type {import('./$types').PageServerLoad} */
@@ -11,4 +12,6 @@ export const load = async ({ params }) => {
 	if (configuration || nudges) {
 		return { configuration, nudges };
 	}
+
+	throw error(404, 'Not found');
 };

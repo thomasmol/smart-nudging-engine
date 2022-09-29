@@ -1,11 +1,20 @@
 <script lang="ts">
+	import { goto, invalidateAll } from "$app/navigation";
 	export let data: any;
-	let res;
+	console.log(data);
+	let loading = false;
 
 	async function generate() {
 		const response = await fetch('/api/configuration/' + data.configuration.id + '/generate');
-		res = await response.json();
+		if(response.ok){
+			loading = false;
+			invalidateAll();
+		}else{
+			throw new Error(response.statusText);
+		}
 	}
+	
+
 </script>
 
 <div class="container space-y-16">
@@ -60,10 +69,17 @@
 				<h2 class="text-slate-700">A list of all nudges of this configuration</h2>
 			</div>
 			<div>
-				<button
-					on:click={generate}
-					class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-					>Generate new nudge</button>
+				{#if loading}
+					<button
+						disabled
+						class="inline-block cursor-not-allowed rounded bg-blue-400 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
+						>Generating...</button>
+				{:else}
+					<button
+						on:click={generate}
+						class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
+						>Generate new nudge</button>
+				{/if}
 			</div>
 		</div>
 		<div class="relative overflow-x-auto rounded-lg border">
@@ -93,6 +109,7 @@
 							<td class="py-4 px-6">{nudge.effectiveness}</td>
 						</tr>
 					{/each}
+					
 				</tbody>
 			</table>
 		</div>
