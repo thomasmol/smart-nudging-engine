@@ -5,11 +5,13 @@
 	let loading = false;
 
 	async function generate() {
+		loading = true;
 		const response = await fetch('/api/configuration/' + data.configuration.id + '/generate');
 		if(response.ok){
 			loading = false;
 			invalidateAll();
 		}else{
+			loading = false;
 			throw new Error(response.statusText);
 		}
 	}
