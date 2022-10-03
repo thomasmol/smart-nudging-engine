@@ -5,25 +5,25 @@
 </script>
 
 <nav class="shadow-xlshadow-zinc-100 border-b border-slate-200 bg-white text-slate-500">
-	<div class="container flex justify-between space-x-10 ">
+	<div class="container flex flex-wrap justify-between md:space-x-10 ">
 		<h1 class="py-4 text-center text-xl font-bold text-slate-700">NaaS</h1>
-		<div class="flex font-semibold">
+		<div class="flex font-semibold text-sm md:text-base">
 			<a
 				class:bg-slate-100={$page.url.pathname === '/'}
 				href="/"
-				class="px-6 py-5 hover:bg-slate-100">Dashboard</a>
+				class="px-2 md:px-6 py-5 hover:bg-slate-100">Dashboard</a>
 			<a
 				class:bg-slate-100={$page.url.pathname.startsWith('/nudgees')}
 				href="/nudgees"
-				class="px-6 py-5 hover:bg-slate-100">Nudgees</a>
+				class="px-2 md:px-6 py-5 hover:bg-slate-100">Nudgees</a>
 			<a
 				class:bg-slate-100={$page.url.pathname.startsWith('/components')}
 				href="/components"
-				class="px-6 py-5 hover:bg-slate-100">Components</a>
+				class="px-2 md:px-6 py-5 hover:bg-slate-100">Components</a>
 			<a
 				class:bg-slate-100={$page.url.pathname.startsWith('/configurations')}
 				href="/configurations"
-				class="px-6 py-5 hover:bg-slate-100">Configurations</a>
+				class="px-2 md:px-6 py-5 hover:bg-slate-100">Configurations</a>
 		</div>
 		<div />
 	</div>
@@ -49,7 +49,7 @@
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 opacity-70">
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 opacity-10">
 			{#each [0, 1] as item}
 				<!-- content here -->
 				<div class="mx-auto w-full rounded-md border bg-white p-4 shadow-sm">
