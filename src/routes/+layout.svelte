@@ -44,12 +44,12 @@
 			<div class="">
 				<button
 					disabled
-					class="inline-block  animate-pulse rounded bg-slate-600 px-4 py-4 align-middle text-lg font-bold text-white shadow-sm"
+					class="inline-block  animate-pulse rounded bg-slate-500/50 px-4 py-4 align-middle text-lg font-bold text-white shadow-sm"
 					><div class="h-2 w-20 rounded bg-slate-400" /></button>
 			</div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 opacity-70">
 			{#each [0, 1] as item}
 				<!-- content here -->
 				<div class="mx-auto w-full rounded-md border bg-white p-4 shadow-sm">

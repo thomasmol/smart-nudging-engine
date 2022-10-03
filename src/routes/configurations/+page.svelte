@@ -48,11 +48,11 @@
 					<p>Reaction wait time: {configuration.reaction_wait_time}</p>
 					<p>Start time: {new Date(configuration.start_time).toLocaleString('nl-NL')}</p>
 				</div>
-				<div class="rounded-b-lg bg-slate-50 p-4 ">
+				<div class="rounded-b-lg bg-slate-50 p-4">
 					<a
-						href="/configurations/{configuration.id}"
-						class="rounded  bg-slate-500 px-4 py-2 font-semibold text-slate-100 hover:bg-slate-600"
-						>View Details</a>
+					href="/configurations/{configuration.id}"
+					class="rounded  bg-slate-500 px-4 py-2 font-semibold text-slate-100 hover:bg-slate-600"
+					>View Nudges</a>
 				</div>
 			</div>
 		{/each}

@@ -27,6 +27,6 @@ export const categories = [
     name: 'implementation intentions'
   },
   {
-    name: 'feedbak'
+    name: 'feedback'
   },
 ];
