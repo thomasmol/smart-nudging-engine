@@ -5,9 +5,9 @@
 </script>
 
 <nav class="shadow-xlshadow-zinc-100 border-b border-slate-200 bg-white text-slate-500">
-	<div class="container px-0 flex flex-wrap justify-between md:space-x-10 ">
-		<h1 class="py-4 text-center text-xl font-bold text-slate-700 px-2">NaaS</h1>
-		<div class="flex flex-wrap font-semibold text-sm md:text-base w-full justify-between">
+	<div class="container px-0 md:px-8 lg:px-12 xl:px-16 flex flex-wrap justify-between md:space-x-10 ">
+		<h1 class="py-4 text-center text-xl font-bold text-slate-700 px-2 md:px-0">NaaS</h1>
+		<div class="flex flex-wrap font-semibold text-sm md:text-base w-full md:w-auto justify-around">
 			<a
 				class:bg-slate-100={$page.url.pathname === '/'}
 				href="/"
