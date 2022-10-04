@@ -10,7 +10,7 @@
 		</div>
 		<div class="">
 			<a
-				href="/components/activity-types/create"
+				href="/components/channels"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
 				>Add Channel</a>
 		</div>
@@ -34,7 +34,7 @@
 						</th>
 						<td class="py-4 px-6"> ? </td>
 						<td class="py-4 px-6">
-							<a href="nudgees/edit?id={channel.id}" class="text-blue-600 hover:underline">edit</a>
+							<a href="/components/channels" class="text-blue-600 hover:underline">edit</a>
 						</td>
 					</tr>
 				{/each}

@@ -34,7 +34,7 @@
 						</th>
 						<td class="py-4 px-6"> ? </td>
 						<td class="py-4 px-6">
-							<a href="nudgees/edit?id={activityType.id}" class="text-blue-600 hover:underline">edit</a>
+							<a href="/components/activity-types" class="text-blue-600 hover:underline">edit</a>
 						</td>
 					</tr>
 				{/each}

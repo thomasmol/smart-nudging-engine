@@ -10,9 +10,9 @@
 		</div>
 		<div class="">
 			<a
-				href="/components/activity-types/create"
+				href="/components/timeframes"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-				>Add Rimeframe</a>
+				>Add Timeframe</a>
 		</div>
 	</div>
 
@@ -36,7 +36,7 @@
 						<td class="py-4 px-6"> {new Date(timeframe.start_time).toLocaleTimeString('nl-NL')} </td>
 						<td class="py-4 px-6"> {new Date(timeframe.end_time).toLocaleTimeString('nl-NL')} </td>
 						<td class="py-4 px-6">
-							<a href="nudgees/edit?id={timeframe.id}" class="text-blue-600 hover:underline">edit</a>
+							<a href="/components/timeframes" class="text-blue-600 hover:underline">edit</a>
 						</td>
 					</tr>
 				{/each}
