@@ -1,22 +1,40 @@
 <script lang="ts">
-	import { goto, invalidateAll } from "$app/navigation";
+	import { invalidateAll } from '$app/navigation';
 	export let data: any;
-	console.log(data);
 	let loading = false;
 
 	async function generate() {
 		loading = true;
 		const response = await fetch('/api/configuration/' + data.configuration.id + '/generate');
-		if(response.ok){
+		if (response.ok) {
 			loading = false;
 			invalidateAll();
-		}else{
+		} else {
 			loading = false;
 			throw new Error(response.statusText);
 		}
 	}
-	
 
+	async function generate2() {
+		loading = true;
+		const response = await fetch('/api/nudge/generate',{
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				configurationId: data.configuration.id,
+				nudgeeId: ''
+			})
+		});
+		if (response.ok) {
+			loading = false;
+			invalidateAll();
+		} else {
+			loading = false;
+			throw new Error(response.statusText);
+		}
+	}
 </script>
 
 <div class="container space-y-16">
@@ -83,6 +101,12 @@
 						>Generate new nudge</button>
 				{/if}
 			</div>
+			<div>
+				<button
+					on:click={generate2}
+					class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
+					>Generate nudge (new)</button>
+			</div>
 		</div>
 		<div class="relative overflow-x-auto rounded-lg border">
 			<table class="w-full text-left text-sm text-gray-500 ">
@@ -111,7 +135,6 @@
 							<td class="py-4 px-6">{nudge.effectiveness}</td>
 						</tr>
 					{/each}
-					
 				</tbody>
 			</table>
 		</div>

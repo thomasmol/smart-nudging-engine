@@ -17,6 +17,7 @@ model Nudgee {
   activity_model           Json?
   Nudge                    Nudge[]
   ActivityGoalContribution ActivityGoalContribution[]
+  Activity                 Activity[]
 
   @@map("nudgees")
 }
@@ -49,8 +50,21 @@ model ActivityType {
   name                     String
   Nudge                    Nudge[]
   ActivityGoalContribution ActivityGoalContribution[]
+  Activity                 Activity[]
 
   @@map("activity_types")
+}
+
+model Activity {
+  id               String       @id @default(uuid()) @db.Uuid
+  nudgee_id        String       @db.Uuid
+  activity_type_id String       @db.Uuid
+  metadata         Json?
+  datetime         DateTime     @db.Timestamptz()
+  ActivityType     ActivityType @relation(references: [id], fields: [activity_type_id])
+  Nudgee           Nudgee       @relation(references: [id], fields: [nudgee_id])
+
+  @@map("activities")
 }
 
 model Category {
