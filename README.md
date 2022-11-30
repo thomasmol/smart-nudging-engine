@@ -1,6 +1,6 @@
 # Smart Nudging Engine
 
-View [live](https://smart-nudgine-engine.vercel.app) demo
+View [live](https://smart-nudging-engine.vercel.app) demo
 
 This is the codebase of the smart nudging engine as part of a master's thesis of the Business Informatics programme at the Utrecht University in 2022. 
 
