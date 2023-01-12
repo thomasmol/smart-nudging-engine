@@ -1,46 +1,11 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
-
-
 	export let data: any;
 	let loading = false;
 
 	async function generate() {
 		loading = true;
 		const response = await fetch('/api/configuration/' + data.configuration.id + '/generate');
-		if (response.ok) {
-			loading = false;
-			invalidateAll();
-		} else {
-			loading = false;
-			throw new Error(response.statusText);
-		}
-	}
-
-	async function aiTest() {
-		const response = await fetch('/api/prompter');
-		if (response.ok) {
-			const data = await response.json();
-			console.log(data);
-		} else {
-			throw new Error(response.statusText);
-		}
-	}
-
-
-
-	async function generate2() {
-		loading = true;
-		const response = await fetch('/api/nudge/generate', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				prompt: data.configuration.id,
-				nudgeeId: ''
-			})
-		});
 		if (response.ok) {
 			loading = false;
 			invalidateAll();
@@ -96,9 +61,6 @@
 		</div>
 	</section>
 	<section>
-		<button on:click={aiTest}>call openai</button>
-	</section>
-	<section>
 		<div class="mb-4 flex justify-between">
 			<div>
 				<h1 class="mb-2 text-xl font-semibold text-slate-800">Generated nudges</h1>
@@ -117,12 +79,6 @@
 						>Generate new nudge</button>
 				{/if}
 			</div>
-			<div>
-				<button
-					on:click={generate2}
-					class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-					>Generate nudge (new)</button>
-			</div>
 		</div>
 		<div class="relative overflow-x-auto rounded-lg border">
 			<table class="w-full text-left text-sm text-gray-500 ">
@@ -130,10 +86,9 @@
 					<tr class="">
 						<th scope="col" class="py-3 px-6">Id</th>
 						<th scope="col" class="py-3 px-6">Activity Type</th>
-						<th scope="col" class="py-3 px-6">Category</th>
-						<th scope="col" class="py-3 px-6">Channel</th>
 						<th scope="col" class="py-3 px-6">Timeframe</th>
 						<th scope="col" class="py-3 px-6">Effectiveness</th>
+						<th scope="col" class="py-3 px-6">Text</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -145,10 +100,9 @@
 								{nudge.id}
 							</th>
 							<td class="py-4 px-6">{nudge.ActivityType.name}</td>
-							<td class="py-4 px-6">{nudge.Category.name}</td>
-							<td class="py-4 px-6">{nudge.Channel.name}</td>
 							<td class="py-4 px-6">{nudge.Timeframe.name}</td>
 							<td class="py-4 px-6">{nudge.effectiveness}</td>
+							<td class="py-4 px-6">{nudge.text}</td>
 						</tr>
 					{/each}
 				</tbody>

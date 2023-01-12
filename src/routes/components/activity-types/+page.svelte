@@ -19,7 +19,7 @@
 	<div class="relative overflow-x-auto rounded-lg border">
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 			<thead
-				class="border-b bg-gray-50 text-sm uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+				class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 				<tr class="">
 					<th scope="col" class="py-3 px-6"> Name </th>
 					<th scope="col" class="py-3 px-6"> Metadata </th>

@@ -11,7 +11,7 @@
 		</div>
 		<div class="">
 			<a
-				href="/components/types/{data.componentType.id}/create"
+				href="/components/{data.componentType.id}/create"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
 				>Add
 			</a>

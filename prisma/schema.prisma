@@ -22,10 +22,9 @@ model Nudgee {
 
 model Nudge {
   id                     String          @id @default(uuid()) @db.Uuid
+  text                   String          @db.Text @default("")
   nudgee_id              String          @db.Uuid
   activity_type_id       String          @db.Uuid
-  category_id            String          @db.Uuid
-  channel_id             String          @db.Uuid
   timeframe_id           String          @db.Uuid
   configuration_id       String          @db.Uuid
   effectiveness          Int
@@ -34,8 +33,6 @@ model Nudge {
   updated_at             DateTime        @updatedAt @db.Timestamptz(6)
   created_at             DateTime        @default(now()) @db.Timestamptz(6)
   ActivityType           ActivityType    @relation(fields: [activity_type_id], references: [id])
-  Category               Category        @relation(fields: [category_id], references: [id])
-  Channel                Channel         @relation(fields: [channel_id], references: [id])
   Configuration          Configuration   @relation(fields: [configuration_id], references: [id])
   Nudgee                 Nudgee          @relation(fields: [nudgee_id], references: [id])
   Timeframe              Timeframe       @relation(fields: [timeframe_id], references: [id])
@@ -66,21 +63,6 @@ model Activity {
   @@map("activities")
 }
 
-model Category {
-  id    String  @id @default(uuid()) @db.Uuid
-  name  String
-  Nudge Nudge[]
-
-  @@map("categories")
-}
-
-model Channel {
-  id    String  @id @default(uuid()) @db.Uuid
-  name  String
-  Nudge Nudge[]
-
-  @@map("channels")
-}
 
 model Timeframe {
   id         String   @id @default(uuid()) @db.Uuid

@@ -17,10 +17,28 @@
 				>Add new type</a>
 		</div>
 	</div>
-	<div class="flex flex-wrap gap-8">
+	<div class="grid md:grid-cols-3 gap-8">
+		<a
+			href="components/activity-types"
+			class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
+			<div class="p-4">
+				<h2 class="text-xl font-semibold">Activity Types (required)</h2>
+				<p class="mt-2 text-sm text-slate-700">string</p>
+			</div>
+			<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
+		</a>
+		<a
+			href="components/timeframes"
+			class="flex-grow rounded-lg border bg-white hover:border-slate-300">
+			<div class="p-4">
+				<h2 class="text-xl font-semibold">Timeframes (required)</h2>
+				<p class="mt-2 text-sm text-slate-700">datetime</p>
+			</div>
+			<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
+		</a>
 		{#each data.componentTypes as { id, label, data_type }}
 			<a
-				href="components/types/{id}"
+				href="components/{id}"
 				class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
 				<div class="p-4">
 					<h2 class="text-xl font-semibold">{label}</h2>
@@ -29,22 +47,7 @@
 				<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
 			</a>
 		{/each}
-		<!-- <a
-		href="components/activity-types"
-		class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
-		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Activity Types</h2>
-		</div>
-		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-	</a>
-	<a
-		href="components/timeframes"
-		class="flex-grow rounded-lg border bg-white hover:border-slate-300">
-		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Timeframes</h2>
-		</div>
-		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-	</a>
+		<!--
 	<a
 		href="components/categories"
 		class="flex-grow rounded-lg border bg-white hover:border-slate-300">

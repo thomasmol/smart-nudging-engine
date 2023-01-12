@@ -8,7 +8,7 @@ import { configurations } from './seeds/configurations';
 const prisma = new PrismaClient();
 
 const main = async () => {
-	
+
 	for (const activityType of activityTypes) {
 		await prisma.activityType.create({
 			data: activityType
@@ -34,7 +34,7 @@ const main = async () => {
 			}
 		});
 	}
-	for (const channel of channels) {
+	/* for (const channel of channels) {
 		await prisma.channel.create({
 			data: channel
 		});
@@ -43,7 +43,7 @@ const main = async () => {
 		await prisma.category.create({
 			data: category
 		});
-	}	
+	}	 */
 	for (const timeFrame of timeFrames) {
 		await prisma.timeframe.create({
 			data: timeFrame
