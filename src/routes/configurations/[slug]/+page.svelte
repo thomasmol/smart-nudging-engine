@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { invalidateAll } from '$app/navigation';
+
+
 	export let data: any;
 	let loading = false;
 
@@ -15,15 +17,27 @@
 		}
 	}
 
+	async function aiTest() {
+		const response = await fetch('/api/prompter');
+		if (response.ok) {
+			const data = await response.json();
+			console.log(data);
+		} else {
+			throw new Error(response.statusText);
+		}
+	}
+
+
+
 	async function generate2() {
 		loading = true;
-		const response = await fetch('/api/nudge/generate',{
+		const response = await fetch('/api/nudge/generate', {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				configurationId: data.configuration.id,
+				prompt: data.configuration.id,
 				nudgeeId: ''
 			})
 		});
@@ -81,7 +95,9 @@
 			</div>
 		</div>
 	</section>
-
+	<section>
+		<button on:click={aiTest}>call openai</button>
+	</section>
 	<section>
 		<div class="mb-4 flex justify-between">
 			<div>
