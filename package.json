@@ -2,7 +2,7 @@
 	"name": "smart-nudging-engine",
 	"version": "0.0.1",
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
 		"build": "vite build && prisma generate && prisma migrate deploy",
 		"package": "vite package",
 		"preview": "vite preview",
@@ -18,8 +18,8 @@
 	"devDependencies": {
 		"@faker-js/faker": "^7.2.0",
 		"@playwright/test": "^1.22.2",
-		"@sveltejs/adapter-auto": "next",
-		"@sveltejs/kit": "next",
+		"@sveltejs/adapter-auto": "^1.0.0",
+		"@sveltejs/kit": "^1.0.11",
 		"@tailwindcss/forms": "^0.5.3",
 		"@types/node": "^18.0.0",
 		"@types/node-cron": "^3.0.4",
@@ -33,20 +33,24 @@
 		"prettier": "^2.7.1",
 		"prettier-plugin-svelte": "^2.7.0",
 		"prettier-plugin-tailwindcss": "^0.1.13",
-		"prisma": "^3.15.2",
+		"prisma": "^4.8.1",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.7.1",
 		"svelte-preprocess": "^4.10.7",
 		"tailwindcss": "^3.1.8",
 		"ts-node": "^10.8.1",
 		"tslib": "^2.3.1",
-		"typescript": "^4.7.4"
+		"typescript": "^4.7.4",
+		"vite": "^4.0.0",
+		"vitest": "^0.25.3"
 	},
 	"type": "module",
 	"dependencies": {
-		"@prisma/client": "^3.15.2",
+		"@auth/core": "^0.2.5",
+		"@auth/sveltekit": "^0.1.12",
+		"@prisma/client": "^4.8.1",
 		"express": "^4.18.2",
 		"node-cron": "^3.0.2",
-		"vite": "^3.1.0"
+		"openai": "^3.1.0"
 	}
 }
