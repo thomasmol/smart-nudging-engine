@@ -1,1 +1,4 @@
-GET http://localhost:5173/api/components/types HTTP/1.1
+GET http://127.0.0.1:5173/api/components HTTP/1.1
+content-type: application/json
+accept: application/json
+Cookie: next-auth.csrf-token=40007cba6453551312e2b0fbdbd7d9e7c0afd3ce73a41a88b03c084fc1da04b7%7C601b606ccad721197c8b3c493bb30befca54440402dc4795f2a7b72200219d0a; next-auth.callback-url=http%3A%2F%2Flocalhost%3A5173%2Flogin; next-auth.session-token=eyJhbGciOiJkaXIiLCJlbmMiOiJBMjU2R0NNIn0..8h4Cwg2FhBElFyDR.wyhySrdweFT8ySmH3ookQcxxT_9gLZNpJe5JZdyhv4UApE4A24wkHz1mSjBr1K6ySNdTZ7juOroy7XR5bWJ3YKQQqTOE3fi6El_tL01aEJXUEKoAojBzJaToaP_hvh0PX4MvQLRnVXNBpN59fed8A1UZoW57Bc2nvg28aPZKXhmVjdCsjfvygasGOkJanlokjaNgFA2DyLGNK33yOacKAQSUoHBJg0uh-hcIyTGA94qRygN7FpqBaMSP5XqK3vs64oa1WQJf_yap-WHXUOhY4hJU.gjIrMyo8sVQmqR2hB6Lcsg

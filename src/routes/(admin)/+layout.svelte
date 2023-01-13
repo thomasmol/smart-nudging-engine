@@ -1,7 +1,8 @@
 <script>
-	import '../app.css';
+	import '../../app.css';
 	import Breadcrumb from '$lib/components/Breadcrumb.svelte';
 	import { navigating, page } from '$app/stores';
+	import { signOut } from '@auth/sveltekit/client';
 </script>
 
 <nav class="shadow-xlshadow-zinc-100 border-b border-slate-200 bg-white text-slate-500">
@@ -25,7 +26,10 @@
 				href="/configurations"
 				class="px-1 md:px-6 py-5 hover:bg-slate-100">Configurations</a>
 		</div>
-		<div />
+		<div class="flex">
+			<button on:click={signOut} class="px-1 md:px-6 py-5 hover:bg-slate-100">Sign out</button>
+		</div>
+
 	</div>
 </nav>
 
