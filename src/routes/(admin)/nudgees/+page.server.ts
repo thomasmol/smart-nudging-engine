@@ -1,10 +1,9 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import type { Nudgee } from '@prisma/client';
+import type { PageServerLoad } from './$types';
 
-export const load = async () => {
-  const nudgees = await prisma.nudgee.findMany();
- 
-  if (nudgees) {
-    return {nudgees};
-  }
-};
+
+export const load = (async ({fetch}) => {
+	const response = await fetch('/api/nudgees');
+	const nudgees: Nudgee[] = await response.json();
+	return { nudgees };
+}) satisfies PageServerLoad;

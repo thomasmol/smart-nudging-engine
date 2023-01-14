@@ -1,5 +1,30 @@
 <script lang="ts">
-	export let data: any;
+	import { invalidateAll } from '$app/navigation';
+	import type { Nudgee } from '@prisma/client';
+	import type { PageData } from './$types';
+	let loading: boolean = false;
+	let result: Nudgee;
+	async function create() {
+		loading = true;
+		const response = await fetch('/api/nudgees', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({})
+		});
+
+		result = await response.json();
+
+		if (result) {
+			console.log('success');
+		}
+
+		loading = false;
+		invalidateAll();
+	}
+
+	export let data: PageData;
 </script>
 
 <div class="container">
@@ -9,10 +34,17 @@
 			<h2 class="text-slate-700">A list of all nudgees</h2>
 		</div>
 		<div class="">
-			<a
-				href="/nudgees"
-				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-				>Add Nudgee</a>
+			{#if loading}
+				<button
+					class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm">
+					<span class="h-4 w-4 animate-spin rounded-full border-t-2 border-b-2 border-gray-900" />
+				</button>
+			{:else}
+				<button
+					on:click={create}
+					class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
+					>Add Nudgee</button>
+			{/if}
 		</div>
 	</div>
 

@@ -5,7 +5,7 @@
 
 	async function generate() {
 		loading = true;
-		const response = await fetch('/api/configuration/' + data.configuration.id + '/generate');
+		const response = await fetch('/api/configurations/' + data.configuration.id + '/generate');
 		if (response.ok) {
 			loading = false;
 			invalidateAll();
