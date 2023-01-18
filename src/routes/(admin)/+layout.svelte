@@ -25,6 +25,10 @@
 				class:bg-slate-100={$page.url.pathname.startsWith('/configurations')}
 				href="/configurations"
 				class="px-1 md:px-6 py-5 hover:bg-slate-100">Configurations</a>
+			<a
+				class:bg-slate-100={$page.url.pathname.startsWith('/groups')}
+				href="/groups"
+				class="px-1 md:px-6 py-5 hover:bg-slate-100">Groups</a>
 		</div>
 		<div class="flex">
 			<button on:click={signOut} class="px-1 md:px-6 py-5 hover:bg-slate-100">Sign out</button>
