@@ -3,7 +3,11 @@ import type { ComponentType } from '@prisma/client';
 import prisma from '$lib/database';
 
 export const GET = (async () => {
-	const compontentTypes: ComponentType[] = await prisma.componentType.findMany();
+	const compontentTypes: ComponentType[] = await prisma.componentType.findMany({
+		include: {
+			ComponentValue: true
+		}
+	});
 	return new Response(JSON.stringify(compontentTypes));
 }) satisfies RequestHandler;
 
@@ -15,7 +19,7 @@ export const POST = (async ({ request }) => {
 
 	const componentType: ComponentType = await prisma.componentType.create({
 		data: {
-			label: label,
+			label,
 			data_type: dataType
 		}
 	});

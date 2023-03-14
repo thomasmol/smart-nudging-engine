@@ -1,9 +1,14 @@
-import type { RequestHandler } from './$types';
-import type {  MetricType } from '@prisma/client';
 import prisma from '$lib/database';
+import type { RequestHandler } from './$types';
+import type { MetricType } from '@prisma/client';
 
 export const GET = (async () => {
-	const metricTypes: MetricType[] = await prisma.metricType.findMany();
+	const metricTypes: MetricType[] = await prisma.metricType.findMany({
+		include: {
+			NudgeMetric: true,
+			Action: true
+		}
+	});
 	return new Response(JSON.stringify(metricTypes));
 }) satisfies RequestHandler;
 

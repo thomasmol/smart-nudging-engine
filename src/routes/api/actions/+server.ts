@@ -1,9 +1,14 @@
 import type { RequestHandler } from './$types';
-import type {  Action } from '@prisma/client';
+import type { Action } from '@prisma/client';
 import prisma from '$lib/database';
 
 export const GET = (async () => {
-	const actions:Action[] = await prisma.action.findMany();
+	const actions: Action[] = await prisma.action.findMany({
+		include: {
+			Nudgee: true,
+			MetricType: true
+		}
+	});
 	return new Response(JSON.stringify(actions));
 }) satisfies RequestHandler;
 

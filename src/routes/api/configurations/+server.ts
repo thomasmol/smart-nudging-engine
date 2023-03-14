@@ -7,16 +7,19 @@ export const GET = (async () => {
 	return new Response(JSON.stringify(configurations));
 }) satisfies RequestHandler;
 
-export const POST = (async ({request}) => {
-  const { name, algorithm, reactionWaitTime, startTime } = await request.json();
+export const POST = (async ({ request }) => {
+	const { name, algorithm, reactionWaitTime, startTime } = await request.json();
+	if (!name || !algorithm || !reactionWaitTime || !startTime) {
+		throw new Error('Missing required parameters');
+	}
 
 	const configuration: Configuration = await prisma.configuration.create({
 		data: {
-      name: name,
-      algorithm: algorithm,
-      reaction_wait_time: reactionWaitTime,
-      start_time: new Date(startTime),
-    }
+			name: name,
+			algorithm: algorithm,
+			reaction_wait_time: reactionWaitTime,
+			start_time: new Date(startTime)
+		}
 	});
 	return new Response(JSON.stringify(configuration));
 }) satisfies RequestHandler;

@@ -15,13 +15,19 @@ export const GET = (async ({ params }) => {
 
 export const PUT = (async ({ request, params }) => {
 	const { label, type } = await request.json();
+	if (!label || !type) {
+		throw new Error('Missing required parameters');
+	}
 	const id = params.id;
-	console.log(label, type, id);
 	const metricType: MetricType = await prisma.metricType.update({
 		where: { id },
 		data: {
 			label,
 			type
+		},
+		include: {
+			NudgeMetric: true,
+			Action: true
 		}
 	});
 
@@ -33,5 +39,5 @@ export const DELETE = (async ({ params }) => {
 		where: { id: params.id }
 	});
 
-	return new Response(JSON.stringify({success:true}));
+	return new Response(JSON.stringify({ success: true }));
 }) satisfies RequestHandler;

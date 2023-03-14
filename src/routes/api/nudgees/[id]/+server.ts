@@ -1,39 +1,38 @@
 import prisma from '$lib/database';
-import type { ComponentType } from '@prisma/client';
+import type { Nudgee } from '@prisma/client';
 import type { RequestHandler } from './$types';
 
 export const GET = (async ({ params }) => {
-	const componentType: ComponentType = await prisma.componentType.findFirstOrThrow({
+	const nudgee: Nudgee = await prisma.nudgee.findFirstOrThrow({
 		include: {
-			ComponentValue: true
+			Action: true
 		},
 		where: { id: params.id }
 	});
-	return new Response(JSON.stringify(componentType));
+	return new Response(JSON.stringify(nudgee));
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { label, dataType } = await request.json();
-	if (!label || !dataType) {
+	const { profile } = await request.json();
+	if (!profile) {
 		throw new Error('Missing required params');
 	}
 	const id = params.id;
-	const componentType: ComponentType = await prisma.componentType.update({
+	const nudgee: Nudgee = await prisma.nudgee.update({
 		where: { id },
 		data: {
-			label,
-			data_type: dataType
+			profile
 		},
 		include: {
-			ComponentValue: true
+			Action: true
 		}
 	});
 
-	return new Response(JSON.stringify(componentType));
+	return new Response(JSON.stringify(nudgee));
 }) satisfies RequestHandler;
 
 export const DELETE = (async ({ params }) => {
-	await prisma.componentType.delete({
+	await prisma.nudgee.delete({
 		where: { id: params.id }
 	});
 

@@ -6,7 +6,7 @@
 </script>
 
 <div class="flex h-screen justify-center">
-	<aside class="m-5 max-h-max rounded border border-slate-200 bg-white text-slate-700 shadow-sm">
+	<aside class="mx-5 h-full border-x border-slate-200 bg-white text-slate-700 shadow-sm">
 		<div class="flex flex-col">
 			<h1 class="py-4 px-2 text-center text-xl font-bold text-slate-800 md:px-0">NaaS</h1>
 			<div class="flex w-full flex-col text-sm font-semibold md:w-auto md:text-base">

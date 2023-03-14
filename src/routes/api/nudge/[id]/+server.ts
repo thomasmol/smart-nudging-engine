@@ -1,42 +1,44 @@
 import prisma from '$lib/database';
-import type { Action } from '@prisma/client';
+import type { Nudge } from '@prisma/client';
 import type { RequestHandler } from './$types';
 
 export const GET = (async ({ params }) => {
-	const action: Action = await prisma.action.findFirstOrThrow({
+	const nudge: Nudge = await prisma.nudge.findFirstOrThrow({
 		include: {
-			Nudgee: true,
-			MetricType: true
+			NudgeMetric: true,
+			UsedComponent: true,
+			NudgeRecipient: true
 		},
 		where: { id: params.id }
 	});
-	return new Response(JSON.stringify(action));
+	return new Response(JSON.stringify(nudge));
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { nudgee_id, metric_type_id, metric_value } = await request.json();
-	if (!nudgee_id || !metric_type_id || !metric_value) {
+	const { content_type, content, generated } = await request.json();
+	if (!content_type || !content || !generated) {
 		throw new Error('Missing required parameters');
 	}
 	const id = params.id;
-	const action: Action = await prisma.action.update({
+	const nudge: Nudge = await prisma.nudge.update({
 		where: { id },
 		data: {
-			nudgee_id,
-			metric_type_id,
-			metric_value
+			content_type,
+			content,
+			generated
 		},
 		include: {
-			Nudgee: true,
-			MetricType: true
+			NudgeMetric: true,
+			UsedComponent: true,
+			NudgeRecipient: true
 		}
 	});
 
-	return new Response(JSON.stringify(action));
+	return new Response(JSON.stringify(nudge));
 }) satisfies RequestHandler;
 
 export const DELETE = (async ({ params }) => {
-	await prisma.action.delete({
+	await prisma.nudge.delete({
 		where: { id: params.id }
 	});
 
