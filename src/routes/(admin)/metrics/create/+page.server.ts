@@ -1,6 +1,4 @@
-import type { MetricType } from '@prisma/client';
 import type { Actions } from './$types';
-
 
 export const actions = {
 	default: async ({ request, fetch }) => {

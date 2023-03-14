@@ -2,7 +2,6 @@
 	import SuccessAlert from '$lib/components/SuccessAlert.svelte';
 	import type { ActionData, PageData } from './$types';
 
-	export let data: PageData;
 	export let form: ActionData;
 </script>
 

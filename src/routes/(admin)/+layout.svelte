@@ -5,13 +5,11 @@
 	import { signOut } from '@auth/sveltekit/client';
 </script>
 
-<div class="flex h-screen">
-	<aside class="max-w-xs border-r h-full border-slate-200 bg-white text-slate-500">
-		<div
-			class="flex flex-col">
-			<h1 class="py-4 px-2 text-center text-xl font-bold text-slate-700 md:px-0">NaaS</h1>
-			<div
-				class="w-full flex flex-col  text-sm font-semibold md:w-auto md:text-base">
+<div class="flex h-screen justify-center">
+	<aside class="m-5 max-h-max rounded border border-slate-200 bg-white text-slate-700 shadow-sm">
+		<div class="flex flex-col">
+			<h1 class="py-4 px-2 text-center text-xl font-bold text-slate-800 md:px-0">NaaS</h1>
+			<div class="flex w-full flex-col text-sm font-semibold md:w-auto md:text-base">
 				<a
 					class:bg-slate-100={$page.url.pathname === '/'}
 					href="/"
@@ -50,7 +48,7 @@
 		</div> -->
 		</div>
 	</aside>
-	<div class="w-full">
+	<div class="w-full max-w-6xl">
 		<div class="container">
 			<Breadcrumb path={$page.url.pathname} />
 		</div>
