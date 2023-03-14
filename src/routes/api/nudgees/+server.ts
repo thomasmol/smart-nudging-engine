@@ -12,6 +12,8 @@ export const POST = (async () => {
 	/* if (!label || !dataType) {
 		throw new Error('Missing required params');
 	} */
-	const nudgee: Nudgee = await prisma.nudgee.create({ data: {} });
+	const nudgee: Nudgee = await prisma.nudgee.create({ data: {
+		profile: {}
+	} });
 	return new Response(JSON.stringify(nudgee));
 }) satisfies RequestHandler;

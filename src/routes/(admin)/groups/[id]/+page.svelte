@@ -6,4 +6,5 @@
 
 <div class="container">
 	<h1>Group: {data.group.name}</h1>
+	<p>Nudgees: {data.group.NudgeeGroup.Nudgee}</p>
 </div>

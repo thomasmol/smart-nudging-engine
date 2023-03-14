@@ -8,7 +8,11 @@ export const GET = (async ({params}) => {
       id: params.id
     },
 		include: {
-			NudgeeGroup: true,
+			NudgeeGroup: {
+        include: {
+          Nudgee: true
+        }
+      },
 		}
 	});
 	return new Response(JSON.stringify(group));

@@ -8,110 +8,38 @@ datasource db {
 }
 
 model Nudgee {
-  id                       String                     @id @default(uuid()) @db.Uuid
-  nudge_category_model     Json?
-  nudge_channel_model      Json?
-  activity_model           Json?
-  Activity                 Activity[]
-  ActivityGoalContribution ActivityGoalContribution[]
-  Nudge                    Nudge[]
-  NudgeeGroup              NudgeeGroup[]
+  id             String           @id @default(uuid()) @db.Uuid
+  profile        Json
+  NudgeeGroup    NudgeeGroup[]
+  NudgeRecipient NudgeRecipient[]
+  Action         Action[]
 
   @@map("nudgees")
 }
 
+model NudgeRecipient {
+  nudge_id   String   @db.Uuid
+  nudgee_id  String   @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
+  Nudgee Nudgee @relation(fields: [nudgee_id], references: [id])
+  Nudge  Nudge  @relation(fields: [nudge_id], references: [id])
+
+  @@id([nudge_id, nudgee_id])
+  @@map("nudge_recipients")
+}
+
 model Nudge {
-  id                     String          @id @default(uuid()) @db.Uuid
-  text                   String          @db.Text @default("")
-  nudgee_id              String          @db.Uuid
-  activity_type_id       String          @db.Uuid
-  timeframe_id           String          @db.Uuid
-  configuration_id       String          @db.Uuid
-  effectiveness          Int
-  present_datetime       DateTime        @db.Timestamptz(6)
-  reaction_wait_datetime DateTime        @db.Timestamptz(6)
-  updated_at             DateTime        @updatedAt @db.Timestamptz(6)
-  created_at             DateTime        @default(now()) @db.Timestamptz(6)
-  ActivityType           ActivityType    @relation(fields: [activity_type_id], references: [id])
-  Configuration          Configuration   @relation(fields: [configuration_id], references: [id])
-  Nudgee                 Nudgee          @relation(fields: [nudgee_id], references: [id])
-  Timeframe              Timeframe       @relation(fields: [timeframe_id], references: [id])
-  UsedComponent          UsedComponent[]
+  id           String  @id @default(uuid()) @db.Uuid
+  content_type String
+  content      String
+  generated    Boolean @default(true)
+
+  UsedComponent  UsedComponent[]
+  NudgeRecipient NudgeRecipient[]
+  NudgeMetric    NudgeMetric[]
 
   @@map("nudges")
-}
-
-model ActivityType {
-  id                       String                     @id @default(uuid()) @db.Uuid
-  name                     String
-  Activity                 Activity[]
-  ActivityGoalContribution ActivityGoalContribution[]
-  Nudge                    Nudge[]
-
-  @@map("activity_types")
-}
-
-model Activity {
-  id               String       @id @default(uuid()) @db.Uuid
-  nudgee_id        String       @db.Uuid
-  activity_type_id String       @db.Uuid
-  metadata         Json?
-  datetime         DateTime     @db.Timestamptz(6)
-  ActivityType     ActivityType @relation(fields: [activity_type_id], references: [id])
-  Nudgee           Nudgee       @relation(fields: [nudgee_id], references: [id])
-
-  @@map("activities")
-}
-
-
-model Timeframe {
-  id         String   @id @default(uuid()) @db.Uuid
-  name       String
-  start_time DateTime @db.Time(6)
-  end_time   DateTime @db.Time(6)
-  Nudge      Nudge[]
-
-  @@map("timeframes")
-}
-
-model ActivityGoalContribution {
-  id               String       @id @default(uuid()) @db.Uuid
-  nudgee_id        String       @db.Uuid
-  activity_type_id String       @db.Uuid
-  contribution     Int
-  ActivityType     ActivityType @relation(fields: [activity_type_id], references: [id])
-  Nudgee           Nudgee       @relation(fields: [nudgee_id], references: [id])
-
-  @@map("activity_goal_contributions")
-}
-
-model Configuration {
-  id                 String   @id @default(uuid()) @db.Uuid
-  name               String
-  algorithm          String
-  reaction_wait_time Int
-  start_time         DateTime @db.Timestamptz(6)
-  Nudge              Nudge[]
-
-  @@map("configurations")
-}
-
-model Group {
-  id          String        @id @default(uuid()) @db.Uuid
-  name        String
-  NudgeeGroup NudgeeGroup[]
-
-  @@map("groups")
-}
-
-model NudgeeGroup {
-  nudgee_id String @db.Uuid
-  group_id  String @db.Uuid
-  Nudgee    Nudgee @relation(fields: [nudgee_id], references: [id])
-  Group     Group  @relation(fields: [group_id], references: [id])
-
-  @@id([nudgee_id, group_id])
-  @@map("nudgee_groups")
 }
 
 model ComponentType {
@@ -141,4 +69,64 @@ model UsedComponent {
 
   @@id([nudge_id, component_value_id])
   @@map("used_components")
+}
+
+model MetricType {
+  id          String        @id @default(uuid()) @db.Uuid
+  label       String
+  type        String
+  Action      Action[]
+  NudgeMetric NudgeMetric[]
+
+  @@map("metric_types")
+}
+
+model Action {
+  id             String     @id @default(uuid()) @db.Uuid
+  nudgee_id      String     @db.Uuid
+  metric_type_id String     @db.Uuid
+  metric_value   String
+  created_at     DateTime   @default(now()) @db.Timestamptz(6)
+  Nudgee         Nudgee     @relation(fields: [nudgee_id], references: [id])
+  MetricType     MetricType @relation(fields: [metric_type_id], references: [id])
+
+  @@map("actions")
+}
+
+model NudgeMetric {
+  nudge_id       String     @db.Uuid
+  metric_type_id String     @db.Uuid
+  Nudge          Nudge      @relation(fields: [nudge_id], references: [id])
+  MetricType     MetricType @relation(fields: [metric_type_id], references: [id])
+
+  @@id([nudge_id, metric_type_id])
+  @@map("nudge_metrics")
+}
+
+model Configuration {
+  id                 String   @id @default(uuid()) @db.Uuid
+  name               String
+  algorithm          String
+  reaction_wait_time Int
+  start_time         DateTime @db.Timestamptz(6)
+
+  @@map("configurations")
+}
+
+model Group {
+  id          String        @id @default(uuid()) @db.Uuid
+  name        String
+  NudgeeGroup NudgeeGroup[]
+
+  @@map("groups")
+}
+
+model NudgeeGroup {
+  nudgee_id String @db.Uuid
+  group_id  String @db.Uuid
+  Nudgee    Nudgee @relation(fields: [nudgee_id], references: [id])
+  Group     Group  @relation(fields: [group_id], references: [id])
+
+  @@id([nudgee_id, group_id])
+  @@map("nudgee_groups")
 }
