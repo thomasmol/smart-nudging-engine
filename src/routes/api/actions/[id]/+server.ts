@@ -6,7 +6,15 @@ export const GET = (async ({ params }) => {
 	const action: Action = await prisma.action.findFirstOrThrow({
 		include: {
 			Nudgee: true,
-			MetricType: true
+			MetricType: {
+				include: {
+					NudgeMetric: {
+						include: {
+							Nudge: true
+						}
+					}
+				}
+			}
 		},
 		where: { id: params.id }
 	});

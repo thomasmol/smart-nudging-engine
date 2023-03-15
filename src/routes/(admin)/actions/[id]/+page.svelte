@@ -7,39 +7,33 @@
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
-			<h1 class="mb-2 text-xl font-semibold text-slate-800">{data.componentType.label}</h1>
-		</div>
-		<div class="">
-			<a
-				href="/components/{data.componentType.id}/create"
-				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-				>Add
-			</a>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Nudgee Action</h1>
 		</div>
 	</div>
 
 	<div class="relative overflow-x-auto rounded-lg border">
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-			<thead
-				class="border-b bg-gray-50 text-sm uppercase text-gray-700">
+			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 				<tr class="">
-					<th scope="col" class="py-3 px-6"> Name </th>
-					<th scope="col" class="py-3 px-6"> Metadata </th>
+					<th scope="col" class="py-3 px-6"> Nudgee </th>
+					<th scope="col" class="py-3 px-6"> Metric Type</th>
+					<th scope="col" class="py-3 px-6"> Metric Value</th>
+					<th scope="col" class="py-3 px-6"> Created At</th>
 					<th scope="col" class="py-3 px-6" />
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.componentValues as {id, value}}
-					<tr class="border-b bg-white ">
-						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
-							{value}
-						</th>
-						<td class="py-4 px-6"> ? </td>
-						<td class="py-4 px-6">
-							<a href="/components/" class="text-blue-600 hover:underline">edit</a>
-						</td>
-					</tr>
-				{/each}
+				<tr class="border-b bg-white ">
+					<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
+						{data.action.Nudgee.id}
+					</th>
+					<td class="py-4 px-6"> {data.action.MetricType.label || 'No type found'} </td>
+					<td class="py-4 px-6"> {data.action.metric_value} </td>
+					<td class="py-4 px-6"> {data.action.created_at} </td>
+					<td class="py-4 px-6">
+						<a href="/actions/{data.action.id}/edit" class="text-blue-600 hover:underline">Edit</a>
+					</td>
+				</tr>
 			</tbody>
 		</table>
 	</div>

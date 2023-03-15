@@ -1,30 +1,29 @@
-import type { Action } from '@prisma/client';
-import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
-export const load = (async ({ params, fetch }) => {
-	const response = await fetch(`/api/actions/${params.id}`);
+import type { Nudgee, MetricType } from '@prisma/client';
 
-	const action: Action = await response.json();
-	return { action };
+export const load = (async ({ fetch }) => {
+	const responseNudgees = await fetch('/api/nudgees');
+	const responseMetricTypes = await fetch('/api/metrics');
+	const nudgees: Nudgee[] = await responseNudgees.json();
+	const metricTypes: MetricType[] = await responseMetricTypes.json();
+	return { nudgees, metricTypes };
 }) satisfies PageServerLoad;
 
 export const actions = {
-	update: async ({ request, params, fetch }) => {
+	default: async ({ request, fetch }) => {
 		const data = await request.formData();
-		const id = params.id;
 		const nudgee_id = data.get('nudgee_id');
 		const metric_type_id = data.get('metric_type_id');
 		const metric_value = data.get('metric_value');
 		const created_at = data.get('created_at');
-		if (!id || !nudgee_id || !metric_type_id || !metric_value || !created_at) {
+		if (!nudgee_id || !metric_type_id || !metric_value) {
 			return {
 				success: false
 			};
 		}
-
-		const response = await fetch(`/api/actions/${id}`, {
-			method: 'PUT',
+		const response = await fetch(`/api/actions`, {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
@@ -44,11 +43,5 @@ export const actions = {
 		return {
 			success: true
 		};
-	},
-	destroy: async ({ params, fetch }) => {
-		await fetch(`/api/actions/${params.id}`, {
-			method: 'DELETE'
-		});
-		throw redirect(303, '/actions');
 	}
 } satisfies Actions;
