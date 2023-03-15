@@ -7,7 +7,7 @@
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
-			<h1 class="mb-2 text-xl font-semibold text-slate-800">{data.metricType.label}</h1>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">{data.nudgee.id}</h1>
 		</div>
 	</div>
 
@@ -15,20 +15,19 @@
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 				<tr class="">
-					<th scope="col" class="py-3 px-6"> Label </th>
-					<th scope="col" class="py-3 px-6"> Type </th>
+					<th scope="col" class="py-3 px-6"> ID </th>
+					<th scope="col" class="py-3 px-6"> Profile </th>
 					<th scope="col" class="py-3 px-6" />
 				</tr>
 			</thead>
 			<tbody>
 				<tr class="border-b bg-white ">
 					<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
-						{data.metricType.label}
+						{data.nudgee.id}
 					</th>
-					<td class="py-4 px-6"> {data.metricType.type} </td>
+					<td class="py-4 px-6">{data.nudgee.profile}</td>
 					<td class="py-4 px-6">
-						<a href="/metrics/{data.metricType.id}/edit" class="text-blue-600 hover:underline"
-							>edit</a>
+						<a href="/nudgees/{data.nudgee.id}/edit" class="text-blue-600 hover:underline">Edit</a>
 					</td>
 				</tr>
 			</tbody>

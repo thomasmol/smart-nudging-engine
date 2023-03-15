@@ -31,7 +31,7 @@ export const GET = (async () => {
 
 export const POST = (async ({ request }) => {
 	const { content_type, content, generated } = await request.json();
-	if (!content_type || !content || !generated) {
+	if (!content_type || !content || generated == null) {
 		throw new Error('Missing required parameters');
 	}
 

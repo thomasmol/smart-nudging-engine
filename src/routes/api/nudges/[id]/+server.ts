@@ -32,7 +32,7 @@ export const GET = (async ({ params }) => {
 
 export const PUT = (async ({ request, params }) => {
 	const { content_type, content, generated } = await request.json();
-	if (!content_type || !content || !generated) {
+	if (!content_type || !content || generated == null) {
 		throw new Error('Missing required parameters');
 	}
 	const id = params.id;

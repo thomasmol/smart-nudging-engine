@@ -21,7 +21,7 @@
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 				<tr class="">
-					<th scope="col" class="py-3 px-6"> Name </th>
+					<th scope="col" class="py-3 px-6"> Label </th>
 					<th scope="col" class="py-3 px-6"> Type </th>
 					<th scope="col" class="py-3 px-6" />
 				</tr>
