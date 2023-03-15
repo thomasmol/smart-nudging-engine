@@ -4,10 +4,15 @@ import type { RequestHandler } from './$types';
 
 export const GET = (async ({ params }) => {
 	const nudgee: Nudgee = await prisma.nudgee.findFirstOrThrow({
+		where: { id: params.id },
 		include: {
-			Action: true
-		},
-		where: { id: params.id }
+			Action: true,
+			NudgeRecipient:{
+				include: {
+					Nudge: true
+				}
+			}
+		}
 	});
 	return new Response(JSON.stringify(nudgee));
 }) satisfies RequestHandler;

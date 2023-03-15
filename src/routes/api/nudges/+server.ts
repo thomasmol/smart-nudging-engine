@@ -5,10 +5,26 @@ import type { Nudge } from '@prisma/client';
 export const GET = (async () => {
 	const nudges: Nudge[] = await prisma.nudge.findMany({
 		include: {
-			NudgeMetric: true,
-			UsedComponent: true,
-			NudgeRecipient: true
-		}
+			NudgeMetric: {
+				include: {
+					MetricType: true
+				}
+			},
+			UsedComponent: {
+				include: {
+					ComponentValue: {
+						include: {
+							ComponentType: true
+						}
+					}
+				}
+			},
+			NudgeRecipient: {
+				include: {
+					Nudgee: true
+				}
+			}
+		},
 	});
 	return new Response(JSON.stringify(nudges));
 }) satisfies RequestHandler;

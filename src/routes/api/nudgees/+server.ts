@@ -5,7 +5,12 @@ import type { RequestHandler } from './$types';
 export const GET = (async () => {
 	const nudgees: Nudgee[] = await prisma.nudgee.findMany({
 		include: {
-			Action: true
+			Action: true,
+			NudgeRecipient:{
+				include: {
+					Nudge: true
+				}
+			}
 		}
 	});
 	return new Response(JSON.stringify(nudgees));

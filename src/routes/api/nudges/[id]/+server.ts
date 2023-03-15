@@ -5,9 +5,25 @@ import type { RequestHandler } from './$types';
 export const GET = (async ({ params }) => {
 	const nudge: Nudge = await prisma.nudge.findFirstOrThrow({
 		include: {
-			NudgeMetric: true,
-			UsedComponent: true,
-			NudgeRecipient: true
+			NudgeMetric: {
+				include: {
+					MetricType: true
+				}
+			},
+			UsedComponent: {
+				include: {
+					ComponentValue: {
+						include: {
+							ComponentType: true
+						}
+					}
+				}
+			},
+			NudgeRecipient: {
+				include: {
+					Nudgee: true
+				}
+			}
 		},
 		where: { id: params.id }
 	});
