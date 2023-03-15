@@ -6,7 +6,15 @@ export const GET = (async () => {
 	const actions: Action[] = await prisma.action.findMany({
 		include: {
 			Nudgee: true,
-			MetricType: true
+			MetricType: {
+				include: {
+					NudgeMetric: {
+						include: {
+							Nudge: true
+						}
+					}
+				}
+			}
 		}
 	});
 	return new Response(JSON.stringify(actions));

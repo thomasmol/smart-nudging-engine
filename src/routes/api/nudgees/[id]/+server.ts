@@ -7,9 +7,14 @@ export const GET = (async ({ params }) => {
 		where: { id: params.id },
 		include: {
 			Action: true,
-			NudgeRecipient:{
+			NudgeRecipient: {
 				include: {
 					Nudge: true
+				}
+			},
+			NudgeeGroup: {
+				include: {
+					Group: true
 				}
 			}
 		}

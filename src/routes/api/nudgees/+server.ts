@@ -6,9 +6,14 @@ export const GET = (async () => {
 	const nudgees: Nudgee[] = await prisma.nudgee.findMany({
 		include: {
 			Action: true,
-			NudgeRecipient:{
+			NudgeRecipient: {
 				include: {
 					Nudge: true
+				}
+			},
+			NudgeeGroup: {
+				include: {
+					Group: true
 				}
 			}
 		}
