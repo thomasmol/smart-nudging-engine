@@ -1,4 +1,4 @@
-import type { Group } from '@prisma/client';
+import type {  Group } from '@prisma/client';
 import type { PageServerLoad } from './$types';
 
 export const load = (async ({fetch}) => {

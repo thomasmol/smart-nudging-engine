@@ -30,6 +30,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				{#if data.nudgees.length === 0}
+					<tr class="border-b bg-white ">
+						<td class="py-4 px-6" colspan="5">
+							No nudgees found
+						</td>
+					</tr>
+				{/if}
 				{#each data.nudgees as nudgee}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">

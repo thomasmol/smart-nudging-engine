@@ -36,6 +36,7 @@
 			</div>
 			<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
 		</a>
+		
 		{#each data.metricTypes as { id, label, data_type }}
 			<a
 				href="components/{id}"

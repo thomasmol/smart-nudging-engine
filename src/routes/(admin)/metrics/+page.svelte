@@ -27,6 +27,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				{#if data.metricTypes.length === 0}
+					<tr class="border-b bg-white ">
+						<td class="py-4 px-6" colspan="3">
+							No metric types found
+						</td>
+					</tr>
+				{/if}
 				{#each data.metricTypes as { id, label, type }}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">

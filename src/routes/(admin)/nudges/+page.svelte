@@ -32,6 +32,13 @@
 				</tr>
 			</thead>
 			<tbody>
+				{#if data.nudges.length === 0}
+					<tr class="border-b bg-white ">
+						<td class="py-4 px-6" colspan="5">
+							No nudges found
+						</td>
+					</tr>
+				{/if}
 				{#each data.nudges as nudge}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
