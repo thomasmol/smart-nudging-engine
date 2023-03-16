@@ -39,7 +39,7 @@
 							{label}
 						</th>
 						<td class="py-4 px-6"> {data_type} </td>
-						<td class="py-4 px-6"> {Object.keys(ComponentValue).length || 'No values found'} </td>
+						<td class="py-4 px-6"> {Object.keys(ComponentValue).length} </td>
 						<td class="py-4 px-6">
 							<a href="/components/{id}" class="text-blue-600 hover:underline">View more</a>
 						</td>

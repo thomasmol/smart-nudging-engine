@@ -8,7 +8,7 @@
 	<div class="mb-4 flex justify-between">
 		<header>
 			<h1 class="mb-2 text-xl font-semibold text-slate-800">Groups</h1>
-			<h2 class="text-slate-700">Group nudgees?</h2>
+			<h2 class="text-slate-700">Group of nudgees</h2>
 		</header>
 		<div class="">
 			<a
@@ -29,17 +29,15 @@
 			<tbody>
 				{#if data.groups.length === 0}
 					<tr class="border-b bg-white ">
-						<td class="py-4 px-6" colspan="3">
-							No groups found
-						</td>
+						<td class="py-4 px-6" colspan="3"> No groups found </td>
 					</tr>
 				{/if}
-				{#each data.groups as { id, name, nudgeeGroup }}
+				{#each data.groups as { id, name, NudgeeGroup }}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
 							{name}
 						</th>
-						<td class="py-4 px-6"> {nudgeeGroup ? Object.keys(nudgeeGroup).length : 0} </td>
+						<td class="py-4 px-6"> {Object.keys(NudgeeGroup).length} </td>
 						<td class="py-4 px-6">
 							<a href="/groups/{id}" class="text-blue-600 hover:underline">View more</a>
 						</td>

@@ -49,4 +49,34 @@
 			</div>
 		</form>
 	</div>
+
+	<header class="mt-10">
+		<h1 class="text-xl font-semibold">Add Nudgees to group</h1>
+	</header>
+	<div class="relative mt-4 overflow-x-auto rounded-lg border bg-white p-5">
+		<form method="post" action="/groups/{data.group.id}?/addnudgees">
+			<div class="mb-4 grid gap-4 sm:mb-5 sm:grid-cols-2 sm:gap-6">
+				<div class="w-full">
+					<label for="nudgees" class="mb-2 block text-sm font-medium text-gray-900">Nudgees</label>
+					<select
+						name="nudgees"
+						id="nudgees"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						multiple
+						required>
+						{#each data.nudgees as nudgee}
+							<option value={nudgee.id}>{nudgee.id}</option>
+						{/each}
+					</select>
+				</div>
+			</div>
+			<div class="flex items-center space-x-4">
+				<button
+					type="submit"
+					class="rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+					Add nudgees
+				</button>
+			</div>
+		</form>
+	</div>
 </div>

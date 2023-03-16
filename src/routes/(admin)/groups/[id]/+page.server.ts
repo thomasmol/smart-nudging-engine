@@ -45,5 +45,32 @@ export const actions = {
 			method: 'DELETE'
 		});
 		throw redirect(303, '/groups');
+	},
+	addnudgees: async ({ request, params, fetch }) => {
+		const data = await request.formData();
+		const nudgees = data.getAll('nudgees');
+		const id = params.id;
+		if (!nudgees || !id) {
+			return {
+				success: false
+			};
+		}
+		const response = await fetch(`/api/groups/${id}/nudgees`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				nudgees
+			})
+		});
+		if (!response.ok) {
+			return {
+				success: false
+			};
+		}
+		return {
+			success: true
+		};
 	}
 } satisfies Actions;
