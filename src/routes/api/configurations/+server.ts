@@ -8,8 +8,8 @@ export const GET = (async () => {
 }) satisfies RequestHandler;
 
 export const POST = (async ({ request }) => {
-	const { name, algorithm, reactionWaitTime, startTime } = await request.json();
-	if (!name || !algorithm || !reactionWaitTime || !startTime) {
+	const { name, algorithm, start_datetime, end_datetime } = await request.json();
+	if (!name || !algorithm || !start_datetime || !end_datetime) {
 		throw new Error('Missing required parameters');
 	}
 
@@ -17,8 +17,8 @@ export const POST = (async ({ request }) => {
 		data: {
 			name: name,
 			algorithm: algorithm,
-			reaction_wait_time: reactionWaitTime,
-			start_time: new Date(startTime)
+			start_datetime: new Date(start_datetime),
+			end_datetime: new Date(end_datetime)
 		}
 	});
 	return new Response(JSON.stringify(configuration));

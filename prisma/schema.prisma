@@ -107,8 +107,8 @@ model Configuration {
   id                 String   @id @default(uuid()) @db.Uuid
   name               String
   algorithm          String
-  reaction_wait_time Int
-  start_time         DateTime @db.Timestamptz(6)
+  start_datetime     DateTime @db.Timestamptz(6)
+  end_datetime       DateTime @db.Timestamptz(6)
 
   @@map("configurations")
 }

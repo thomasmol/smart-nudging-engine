@@ -10,9 +10,9 @@ export const GET = (async ({ params }) => {
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { name, algorithm, reactionWaitTime, startTime } = await request.json();
-	const id = params.id;
-	if (!name || !algorithm || !reactionWaitTime || !startTime || !id) {
+	const { name, algorithm, start_datetime, end_datetime } = await request.json();
+	const { id } = params;
+	if (!id || !name || !algorithm || !start_datetime || !end_datetime) {
 		throw new Error('Missing required parameters');
 	}
 	const configuration: Configuration = await prisma.configuration.update({
@@ -20,8 +20,8 @@ export const PUT = (async ({ request, params }) => {
 		data: {
 			name: name,
 			algorithm: algorithm,
-			reaction_wait_time: reactionWaitTime,
-			start_time: new Date(startTime)
+			start_datetime: new Date(start_datetime),
+			end_datetime: new Date(end_datetime)
 		}
 	});
 
