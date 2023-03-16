@@ -1,6 +1,7 @@
-import type { ComponentType } from '@prisma/client';
-import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
+import { redirect } from '@sveltejs/kit';
+
+import type { ComponentType } from '@prisma/client';
 
 export const load = (async ({ params, fetch }) => {
 	const response = await fetch(`/api/components/${params.id}`);
@@ -10,25 +11,22 @@ export const load = (async ({ params, fetch }) => {
 }) satisfies PageServerLoad;
 
 export const actions = {
-	update: async ({ request, params, fetch }) => {
+	default: async ({ request, fetch, params }) => {
 		const data = await request.formData();
-		const id = params.id;
-		const label = data.get('label');
-		const data_type = data.get('data_type');
-		if (!id || !label || !data_type) {
+		const component_id = params.id;
+		const value = data.get('value');
+		if (!component_id || !value) {
 			return {
 				success: false
 			};
 		}
-
-		const response = await fetch(`/api/components/${id}`, {
-			method: 'PUT',
+		const response = await fetch(`/api/components/${component_id}/values`, {
+			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				label,
-				data_type
+				value
 			})
 		});
 
@@ -37,14 +35,6 @@ export const actions = {
 				success: false
 			};
 		}
-		return {
-			success: true
-		};
-	},
-	destroy: async ({ params, fetch }) => {
-		await fetch(`/api/components/${params.id}`, {
-			method: 'DELETE'
-		});
-		throw redirect(303, '/components');
+		throw redirect(303, `/components/${component_id}`);
 	}
 } satisfies Actions;

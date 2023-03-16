@@ -31,7 +31,7 @@
 			<tbody>
 				{#if data.actions.length === 0}
 					<tr class="border-b bg-white ">
-						<td class="py-4 px-6" colspan="3">
+						<td class="py-4 px-6" colspan="6">
 							No actions found
 						</td>
 					</tr>

@@ -13,8 +13,8 @@ export const GET = (async ({ params }) => {
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { label, dataType } = await request.json();
-	if (!label || !dataType) {
+	const { label, data_type } = await request.json();
+	if (!label || !data_type) {
 		throw new Error('Missing required params');
 	}
 	const id = params.id;
@@ -22,7 +22,7 @@ export const PUT = (async ({ request, params }) => {
 		where: { id },
 		data: {
 			label,
-			data_type: dataType
+			data_type
 		},
 		include: {
 			ComponentValue: true

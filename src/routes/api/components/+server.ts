@@ -12,15 +12,15 @@ export const GET = (async () => {
 }) satisfies RequestHandler;
 
 export const POST = (async ({ request }) => {
-	const { label, dataType } = await request.json();
-	if (!label || !dataType) {
+	const { label, data_type } = await request.json();
+	if (!label || !data_type) {
 		throw new Error('Missing required params');
 	}
 
 	const componentType: ComponentType = await prisma.componentType.create({
 		data: {
 			label,
-			data_type: dataType
+			data_type
 		}
 	});
 	return new Response(JSON.stringify(componentType));
