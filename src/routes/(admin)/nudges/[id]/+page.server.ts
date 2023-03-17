@@ -4,8 +4,8 @@ import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ params, fetch }) => {
 	const response = await fetch(`/api/nudges/${params.id}`);
-
 	const nudge: Nudge = await response.json();
+	console.log(nudge);
 	return { nudge };
 }) satisfies PageServerLoad;
 
