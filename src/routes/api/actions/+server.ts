@@ -25,7 +25,6 @@ export const POST = (async ({ request }) => {
 	if (!nudgee_id || !metric_type_id || !metric_value) {
 		throw new Error('Missing required parameters');
 	}
-	console.log('creating action');
 
 	const action: Action = await prisma.action.create({
 		data: {
