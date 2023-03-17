@@ -10,6 +10,7 @@ datasource db {
 model Nudgee {
   id             String           @id @default(uuid()) @db.Uuid
   profile        Json
+  created_at     DateTime         @default(now()) @db.Timestamptz(6)
   NudgeeGroup    NudgeeGroup[]
   NudgeRecipient NudgeRecipient[]
   Action         Action[]
@@ -22,18 +23,19 @@ model NudgeRecipient {
   nudgee_id  String   @db.Uuid
   created_at DateTime @default(now()) @db.Timestamptz(6)
 
-  Nudgee Nudgee @relation(fields: [nudgee_id], references: [id])
-  Nudge  Nudge  @relation(fields: [nudge_id], references: [id])
+  Nudgee Nudgee @relation(fields: [nudgee_id], references: [id], onDelete: Cascade)
+  Nudge  Nudge  @relation(fields: [nudge_id], references: [id], onDelete: Cascade)
 
   @@id([nudge_id, nudgee_id])
   @@map("nudge_recipients")
 }
 
 model Nudge {
-  id           String  @id @default(uuid()) @db.Uuid
+  id           String   @id @default(uuid()) @db.Uuid
   content_type String
   content      String
-  generated    Boolean @default(true)
+  generated    Boolean  @default(true)
+  created_at   DateTime @default(now()) @db.Timestamptz(6)
 
   UsedComponent  UsedComponent[]
   NudgeRecipient NudgeRecipient[]
@@ -55,7 +57,7 @@ model ComponentValue {
   id                String          @id @default(uuid()) @db.Uuid
   component_type_id String          @db.Uuid
   value             String
-  ComponentType     ComponentType   @relation(fields: [component_type_id], references: [id])
+  ComponentType     ComponentType   @relation(fields: [component_type_id], references: [id], onDelete: Cascade)
   UsedComponent     UsedComponent[]
 
   @@map("component_values")
@@ -64,8 +66,8 @@ model ComponentValue {
 model UsedComponent {
   nudge_id           String         @db.Uuid
   component_value_id String         @db.Uuid
-  Nudge              Nudge          @relation(fields: [nudge_id], references: [id])
-  ComponentValue     ComponentValue @relation(fields: [component_value_id], references: [id])
+  Nudge              Nudge          @relation(fields: [nudge_id], references: [id], onDelete: Cascade)
+  ComponentValue     ComponentValue @relation(fields: [component_value_id], references: [id], onDelete: Cascade)
 
   @@id([nudge_id, component_value_id])
   @@map("used_components")
@@ -96,26 +98,31 @@ model Action {
 model NudgeMetric {
   nudge_id       String     @db.Uuid
   metric_type_id String     @db.Uuid
-  Nudge          Nudge      @relation(fields: [nudge_id], references: [id])
-  MetricType     MetricType @relation(fields: [metric_type_id], references: [id])
+  Nudge          Nudge      @relation(fields: [nudge_id], references: [id], onDelete: Cascade)
+  MetricType     MetricType @relation(fields: [metric_type_id], references: [id], onDelete: Cascade)
 
   @@id([nudge_id, metric_type_id])
   @@map("nudge_metrics")
 }
 
 model Configuration {
-  id                 String   @id @default(uuid()) @db.Uuid
-  name               String
-  algorithm          String
-  start_datetime     DateTime @db.Timestamptz(6)
-  end_datetime       DateTime @db.Timestamptz(6)
+  id             String   @id @default(uuid()) @db.Uuid
+  name           String
+  algorithm      String
+  generate       Boolean  @default(false)
+  generate_model String
+  start_datetime DateTime @db.Timestamptz(6)
+  end_datetime   DateTime @db.Timestamptz(6)
+  created_at     DateTime @default(now()) @db.Timestamptz(6)
 
   @@map("configurations")
 }
 
 model Group {
-  id          String        @id @default(uuid()) @db.Uuid
-  name        String
+  id         String   @id @default(uuid()) @db.Uuid
+  name       String
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+
   NudgeeGroup NudgeeGroup[]
 
   @@map("groups")
@@ -124,8 +131,8 @@ model Group {
 model NudgeeGroup {
   nudgee_id String @db.Uuid
   group_id  String @db.Uuid
-  Nudgee    Nudgee @relation(fields: [nudgee_id], references: [id])
-  Group     Group  @relation(fields: [group_id], references: [id])
+  Nudgee    Nudgee @relation(fields: [nudgee_id], references: [id], onDelete: Cascade)
+  Group     Group  @relation(fields: [group_id], references: [id], onDelete: Cascade)
 
   @@id([nudgee_id, group_id])
   @@map("nudgee_groups")

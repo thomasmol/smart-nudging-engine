@@ -13,7 +13,6 @@ export const POST = (async ({ request, params }) => {
       group_id
     }
   });
-  console.log(nudgeeGroupData);
 	await prisma.nudgeeGroup.createMany({
 		data: nudgeeGroupData,
     skipDuplicates: true

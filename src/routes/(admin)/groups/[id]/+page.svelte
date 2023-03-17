@@ -10,6 +10,7 @@
 			<h1 class="mb-2 text-xl font-semibold text-slate-800">Group {data.group.name}</h1>
 		</div>
 	</div>
+	
 
 	<div class="relative overflow-x-auto rounded-lg border">
 		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
