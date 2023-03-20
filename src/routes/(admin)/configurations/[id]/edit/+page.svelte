@@ -7,7 +7,7 @@
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
-			<h1 class="mb-2 text-xl font-semibold text-slate-800">Update action</h1>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Update configuration</h1>
 		</div>
 	</div>
 

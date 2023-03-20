@@ -5,10 +5,19 @@
 	import MainPageShiver from '$lib/components/MainPageShiver.svelte';
 
 	let isOpen = false;
-
+	const pages = [
+		{ path: '/', label: 'Overview' },
+		{ path: '/configurations', label: 'Configurations' },
+		{ path: '/groups', label: 'Groups' },
+		{ path: '/nudgees', label: 'Nudgees' },
+		{ path: '/actions', label: 'Actions' },
+		{ path: '/nudges', label: 'Nudges' },
+		{ path: '/components', label: 'Components' },
+		{ path: '/metrics', label: 'Metrics' },
+	];
 </script>
 
-<div class="justify-between flex h-screen">
+<div class="flex h-screen justify-between">
 	<aside
 		class="fixed inset-y-0 left-0 z-50 h-full transform border-r border-slate-200 bg-white text-slate-700 md:block md:h-auto md:transform-none
 		{isOpen
@@ -22,7 +31,7 @@
 		<div class="flex h-full flex-col">
 			<h1 class="py-4 px-2 text-center text-2xl font-bold text-slate-800 md:px-0">NaaS</h1>
 			<div class="flex w-full flex-col text-sm font-semibold md:w-auto md:text-base">
-				{#each [{ path: '/', label: 'Overview' }, { path: '/nudgees', label: 'Nudgees' }, { path: '/nudges', label: 'Nudges' }, { path: '/actions', label: 'Actions' }, { path: '/metrics', label: 'Metrics' }, { path: '/components', label: 'Components' }, { path: '/configurations', label: 'Configurations' }, { path: '/groups', label: 'Groups' }] as { path, label }}
+				{#each pages as { path, label }}
 					<a
 						class:bg-slate-100={$page.url.pathname === path ||
 							($page.url.pathname.startsWith(path) && path !== '/')}
@@ -51,5 +60,5 @@
 			<slot />
 		{/if}
 	</div>
-	<div></div>
+	<div />
 </div>

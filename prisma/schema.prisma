@@ -106,14 +106,17 @@ model NudgeMetric {
 }
 
 model Configuration {
-  id             String   @id @default(uuid()) @db.Uuid
-  name           String
-  algorithm      String
-  generate       Boolean  @default(false)
-  generate_model String
-  start_datetime DateTime @db.Timestamptz(6)
-  end_datetime   DateTime @db.Timestamptz(6)
-  created_at     DateTime @default(now()) @db.Timestamptz(6)
+  id                   String   @id @default(uuid()) @db.Uuid
+  name                 String
+  algorithm            String
+  generate             Boolean  @default(false)
+  generate_model       String?
+  deconstructed_prompt Json?
+  start_datetime       DateTime @db.Timestamptz(6)
+  end_datetime         DateTime @db.Timestamptz(6)
+  created_at           DateTime @default(now()) @db.Timestamptz(6)
+
+  GroupConfiguration GroupConfiguration[]
 
   @@map("configurations")
 }
@@ -123,7 +126,8 @@ model Group {
   name       String
   created_at DateTime @default(now()) @db.Timestamptz(6)
 
-  NudgeeGroup NudgeeGroup[]
+  NudgeeGroup        NudgeeGroup[]
+  GroupConfiguration GroupConfiguration[]
 
   @@map("groups")
 }
@@ -136,4 +140,15 @@ model NudgeeGroup {
 
   @@id([nudgee_id, group_id])
   @@map("nudgee_groups")
+}
+
+model GroupConfiguration {
+  group_id         String        @db.Uuid
+  configuration_id String        @db.Uuid
+  is_nudged        Boolean       @default(false)
+  Group            Group         @relation(fields: [group_id], references: [id], onDelete: Cascade)
+  Configuration    Configuration @relation(fields: [configuration_id], references: [id], onDelete: Cascade)
+
+  @@id([group_id, configuration_id])
+  @@map("group_configurations")
 }

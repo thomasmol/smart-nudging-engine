@@ -10,7 +10,15 @@ export const GET = (async ({ params }) => {
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { name, algorithm, start_datetime, end_datetime } = await request.json();
+	const {
+		name,
+		algorithm,
+		generate,
+		generate_model,
+		deconstructed_prompt,
+		start_datetime,
+		end_datetime
+	} = await request.json();
 	const { id } = params;
 	if (!id || !name || !algorithm || !start_datetime || !end_datetime) {
 		throw new Error('Missing required parameters');
@@ -20,6 +28,9 @@ export const PUT = (async ({ request, params }) => {
 		data: {
 			name: name,
 			algorithm: algorithm,
+			generate: generate,
+			generate_model: generate_model,
+			deconstructed_prompt: deconstructed_prompt,
 			start_datetime: new Date(start_datetime),
 			end_datetime: new Date(end_datetime)
 		}
