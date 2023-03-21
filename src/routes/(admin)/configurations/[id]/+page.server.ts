@@ -1,12 +1,14 @@
-import type { Configuration } from '@prisma/client';
+import type { ComponentType, Configuration } from '@prisma/client';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ params, fetch }) => {
 	const response = await fetch(`/api/configurations/${params.id}`);
-
 	const configuration: Configuration = await response.json();
-	return { configuration };
+
+	const responseComponents = await fetch('/api/components');
+	const componentTypes : ComponentType[] = await responseComponents.json();
+	return { configuration, componentTypes };
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -17,11 +19,19 @@ export const actions = {
 		const start_datetime = data.get('start_datetime');
 		const end_datetime = data.get('end_datetime');
 		const algorithm = data.get('algorithm');
+		const prompt_types = data.getAll('prompt[type][]');
+		const prompt_contents = data.getAll('prompt[content][]');
+		const generate = data.has('generate');
+		const generate_model = data.get('generate_model');
 		if (!id || !name || !start_datetime || !end_datetime || !algorithm) {
 			return {
 				success: false
 			};
 		}
+		const deconstructed_prompt = prompt_types.map((type, index) => ({
+			type,
+			content: prompt_contents[index]
+		}));
 
 		const response = await fetch(`/api/configurations/${id}`, {
 			method: 'PUT',
@@ -32,7 +42,10 @@ export const actions = {
 				name,
 				start_datetime,
 				end_datetime,
-				algorithm
+				generate,
+				generate_model,
+				algorithm,
+				deconstructed_prompt
 			})
 		});
 

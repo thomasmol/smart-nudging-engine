@@ -2,6 +2,12 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	let generate: boolean = data.configuration.generate;
+	let inputRows = data.configuration.deconstructed_prompt;
+	function addInputRow() {
+		inputRows = [...inputRows, { type: 'text', content: '' }];
+	}
 </script>
 
 <div class="container">
@@ -19,8 +25,8 @@
 					<input
 						type="text"
 						name="name"
+						value="{data.configuration.name}"
 						id="name"
-						value={data.configuration.name}
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
 						placeholder="Name"
 						required />
@@ -31,8 +37,8 @@
 					<input
 						type="text"
 						name="algorithm"
+						value="{data.configuration.algorithm}"
 						id="algorithm"
-						value={data.configuration.algorithm}
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
 						placeholder="Algorithm"
 						required />
@@ -43,8 +49,8 @@
 					<input
 						type="datetime-local"
 						name="start_datetime"
+						value="{new Date(data.configuration.start_datetime).toISOString().slice(0, -8)}"
 						id="start_datetime"
-						value={new Date(data.configuration.start_datetime).toISOString().slice(0, 16)}
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 				</div>
 				<div class="w-full">
@@ -53,16 +59,91 @@
 					<input
 						type="datetime-local"
 						name="end_datetime"
+						value="{new Date(data.configuration.end_datetime).toISOString().slice(0, -8)}"
 						id="end_datetime"
-						value={new Date(data.configuration.end_datetime).toISOString().slice(0, 16)}
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 				</div>
+				<div class="col-span-2">
+					<label for="content" class="mb-2 block text-sm font-medium text-gray-900"
+						>Generate nudges</label>
+					<input
+						type="checkbox"
+						name="generate"
+						bind:checked={generate}
+						id="generate"
+						class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="generate" />
+				</div>
+				{#if generate && data.componentTypes}
+					<div class="col-span-2">
+						<label for="generate-model" class="mb-2 block text-sm font-medium text-gray-900"
+							>Generate model (model that is used to generate nudges)</label>
+						<select
+							id="generate-model"
+							name="generate_model"
+							class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+							<option value="gpt-4">OpenAI GPT-4</option>
+						</select>
+					</div>
+					<header class="col-span-2">
+						<h2 class="font-semibold">Prompt builder</h2>
+						<h3 class="text-sm text-slate-700">
+							Build a prompt with component types that is used to generate prompts
+						</h3>
+					</header>
+					<p class=" rounded-lg border p-2 font-semibold text-slate-800 ">
+						"{#each inputRows as inputRow}
+							{#if inputRow.type === 'text'}
+								{inputRow.content}
+							{:else if inputRow.type === 'component_type_id'}
+								{#each data.componentTypes as componentType}
+									{#if componentType.id === inputRow.content}
+										<span class="font-bold italic">{componentType.label}</span>
+									{/if}
+								{/each}
+							{/if}
+						{/each}"
+					</p>
+					{#each inputRows as inputRow, i}
+						<div class="col-span-2 flex gap-4">
+							<select
+								bind:value={inputRow.type}
+								name="prompt[type][]"
+								class="focus:ring-primary-500 focus:border-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+								<option value="text">Text</option>
+								<option value="component_type_id">Component Type</option>
+							</select>
+							{#if inputRow.type === 'text'}
+								<input
+									bind:value={inputRow.content}
+									type="text"
+									name="prompt[content][]"
+									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
+									placeholder="Content" />
+							{:else}
+								<select
+									bind:value={inputRow.content}
+									name="prompt[content][]"
+									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+									{#each data.componentTypes as componentType}
+										<option value={componentType.id}>{componentType.label}</option>
+									{/each}
+								</select>
+							{/if}
+						</div>
+					{/each}
+					<button
+						type="button"
+						on:click={addInputRow}
+						class="col-span-2 rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+						Add prompt section</button>
+				{/if}
 			</div>
 			<div class="flex items-center space-x-4">
 				<button
 					type="submit"
 					class="rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
-					Update action
+					Update configuration
 				</button>
 				<button
 					formaction="/configurations/{data.configuration.id}?/destroy"
