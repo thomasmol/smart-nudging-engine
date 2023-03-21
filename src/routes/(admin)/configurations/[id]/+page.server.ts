@@ -19,6 +19,7 @@ export const actions = {
 		const start_datetime = data.get('start_datetime');
 		const end_datetime = data.get('end_datetime');
 		const algorithm = data.get('algorithm');
+		const groups = data.getAll('groups');
 		const prompt_types = data.getAll('prompt[type][]');
 		const prompt_contents = data.getAll('prompt[content][]');
 		const generate = data.has('generate');
@@ -45,7 +46,8 @@ export const actions = {
 				generate,
 				generate_model,
 				algorithm,
-				deconstructed_prompt
+				deconstructed_prompt,
+				groups
 			})
 		});
 

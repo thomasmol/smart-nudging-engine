@@ -63,6 +63,31 @@
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 				</div>
 				<div class="col-span-2">
+					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
+						>Groups you want to nudge</label>
+					<ul class="grid w-full gap-6 md:grid-cols-4">
+						{#each data.groups as group}
+							<li>
+								<input
+									type="checkbox"
+									name="groups"
+									id="group-{group.id}"
+									value={group.id}
+									class="peer hidden"
+									 />
+								<label
+									for="group-{group.id}"
+									class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-3 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-slate-600 peer-checked:text-gray-600">
+									<div class="block">
+										<div class="w-full text-base font-semibold">{group.name}</div>
+										<div class="w-full text-sm">{group.NudgeeGroup.length} nudgees</div>
+									</div>
+								</label>
+							</li>
+						{/each}
+					</ul>
+				</div>
+				<div class="col-span-2">
 					<label for="content" class="mb-2 block text-sm font-medium text-gray-900"
 						>Generate nudges</label>
 					<input

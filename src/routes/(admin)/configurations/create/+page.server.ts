@@ -1,10 +1,12 @@
 import type { Actions, PageServerLoad } from './$types';
-import type { ComponentType } from '@prisma/client';
+import type { ComponentType, Group } from '@prisma/client';
 
 export const load = (async ({ fetch }) => {
 	const response = await fetch('/api/components');
 	const componentTypes: ComponentType[] = await response.json();
-	return { componentTypes };
+	const responseGroups = await fetch('/api/groups');
+	const groups: Group[] = await responseGroups.json();
+	return { componentTypes, groups };
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -16,6 +18,7 @@ export const actions = {
 		const algorithm = data.get('algorithm');
 		const prompt_types = data.getAll('prompt[type][]');
 		const prompt_contents = data.getAll('prompt[content][]');
+		const groups = data.getAll('groups');
 		const generate = data.has('generate');
 		const generate_model = data.get('generate_model');
 
@@ -53,7 +56,8 @@ export const actions = {
 				generate,
 				generate_model,
 				algorithm,
-				deconstructed_prompt
+				deconstructed_prompt,
+				groups
 			})
 		});
 

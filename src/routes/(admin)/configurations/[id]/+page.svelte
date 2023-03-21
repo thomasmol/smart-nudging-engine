@@ -43,6 +43,24 @@
 			</tbody>
 		</table>
 	</div>
+
+	{#if data.configuration.GroupConfiguration.length > 0}
+		<h2 class="text-semibold mt-10 text-lg">Groups</h2>
+		<ul class="mt-2 grid w-full gap-6 md:grid-cols-4">
+			{#each data.configuration.GroupConfiguration as { Group }}
+				<li>
+					<div
+						class="inline-flex w-full items-center justify-between rounded-lg border bg-white p-3 text-slate-600">
+						<div class="block">
+							<div class="w-full text-base font-semibold">{Group.name}</div>
+							<div class="w-full text-sm">{Group.NudgeeGroup.length} nudgees</div>
+						</div>
+					</div>
+				</li>
+			{/each}
+		</ul>
+	{/if}
+
 	{#if data.configuration.generate && data.configuration.deconstructed_prompt}
 		<h2 class="text-semibold mt-10 text-lg">Prompt</h2>
 		<div class="relative mt-4 overflow-x-auto rounded-lg border">
