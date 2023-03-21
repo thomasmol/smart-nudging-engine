@@ -1,10 +1,8 @@
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
+import type {  Configuration } from '@prisma/client';
+import type { PageServerLoad } from './$types';
 
-export const load = async () => {
-  const configurations = await prisma.configuration.findMany();
- 
-  if (configurations) {
-    return {configurations};
-  }
-};
+export const load = (async ({fetch}) => {
+	const response = await fetch('/api/configurations');
+	const configurations: Configuration[] = await response.json();
+	return { configurations };
+}) satisfies PageServerLoad;

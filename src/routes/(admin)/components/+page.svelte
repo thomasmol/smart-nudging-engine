@@ -6,61 +6,46 @@
 
 <div class="container">
 	<div class="mb-4 flex justify-between">
-		<div>
-			<h1 class="mb-2 text-xl font-semibold text-slate-800">Component types</h1>
-			<h2 class="text-slate-700">A list of all nudge component types</h2>
-		</div>
+		<header>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Component Types</h1>
+			<h2 class="text-slate-700">Nudge component types</h2>
+		</header>
 		<div class="">
 			<a
 				href="/components/create"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
-				>Add new type</a>
+				>Add new component type</a>
 		</div>
 	</div>
-	<div class="grid md:grid-cols-3 gap-8">
-		<a
-			href="components/activity-types"
-			class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
-			<div class="p-4">
-				<h2 class="text-xl font-semibold">Activity Types (required)</h2>
-				<p class="mt-2 text-sm text-slate-700">string</p>
-			</div>
-			<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-		</a>
-		<a
-			href="components/timeframes"
-			class="flex-grow rounded-lg border bg-white hover:border-slate-300">
-			<div class="p-4">
-				<h2 class="text-xl font-semibold">Timeframes (required)</h2>
-				<p class="mt-2 text-sm text-slate-700">datetime</p>
-			</div>
-			<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-		</a>
-		{#each data.componentTypes as { id, label, data_type }}
-			<a
-				href="components/{id}"
-				class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
-				<div class="p-4">
-					<h2 class="text-xl font-semibold">{label}</h2>
-					<p class="mt-2 text-sm text-slate-700">{data_type}</p>
-				</div>
-				<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-			</a>
-		{/each}
-		<!--
-	<a
-		href="components/categories"
-		class="flex-grow rounded-lg border bg-white hover:border-slate-300">
-		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Categories</h2>
-		</div>
-		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-	</a>
-	<a href="components/channels" class="flex-grow rounded-lg border bg-white hover:border-slate-300">
-		<div class="flex gap-4 p-4">
-			<h2 class="text-xl font-semibold">Channels</h2>
-		</div>
-		<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-	</a> -->
+	<div class="relative overflow-x-auto rounded-lg border">
+		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
+				<tr class="">
+					<th scope="col" class="py-3 px-6"> Label </th>
+					<th scope="col" class="py-3 px-6"> Data Type</th>
+					<th scope="col" class="py-3 px-6"> Value Count</th>
+					<th scope="col" class="py-3 px-6" />
+				</tr>
+			</thead>
+			<tbody>
+				{#if data.componentTypes.length === 0}
+					<tr class="border-b bg-white ">
+						<td class="py-4 px-6" colspan="6"> No Component Types found </td>
+					</tr>
+				{/if}
+				{#each data.componentTypes as { id, label, data_type, ComponentValue }}
+					<tr class="border-b bg-white ">
+						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
+							{label}
+						</th>
+						<td class="py-4 px-6"> {data_type} </td>
+						<td class="py-4 px-6"> {Object.keys(ComponentValue).length} </td>
+						<td class="py-4 px-6">
+							<a href="/components/{id}" class="text-blue-600 hover:underline">View more</a>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	</div>
 </div>

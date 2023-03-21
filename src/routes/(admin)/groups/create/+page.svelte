@@ -1,56 +1,42 @@
 <script lang="ts">
-	import type { Group } from '@prisma/client';
-	let result: Group;
-	let loading: boolean = false;
+	import SuccessAlert from '$lib/components/SuccessAlert.svelte';
+	import type { ActionData, PageData } from './$types';
 
-	// method that calls the API to create a group
-	const create = async (event: Event) => {
-		loading = true;
-		const form = event.target as HTMLFormElement;
-		const data = new FormData(form);
-		const response = await fetch('/api/groups', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body:JSON.stringify(
-        {
-          name: data.get('name')
-        }
-      )
-		});
-		result = await response.json();
-
-		loading = false;
-	};
+	export let form: ActionData;
 </script>
 
 <div class="container">
-	<form on:submit|preventDefault={create} class="max-w-md rounded-lg border bg-white p-6">
-		<h1 class="text-lg font-semibold text-slate-900">Create new group</h1>
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="label">Name</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			name="name"
-			type="text"
-			placeholder="Enter a name"
-			required />
-
-		{#if loading}
-			<button
-				disabled
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Adding group...</button>
-		{:else}
-			<button
-				type="submit"
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Submit</button>
-		{/if}
-	</form>
-	{#if result}
-		<div class="mt-2 max-w-md rounded-lg border border-green-100 bg-green-50 p-6">
-			<p>Added <span class="font-semibold">"{result.name}"</span> successfully</p>
+	<div class="mb-4 flex justify-between">
+		<div>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Create new group</h1>
 		</div>
-	{/if}
+	</div>
+	<div class="relative overflow-x-auto rounded-lg border bg-white p-5">
+		<form method="post">
+			<div class="mb-4 grid gap-4 sm:mb-5 sm:grid-cols-2 sm:gap-6">
+				<div class="w-full">
+					<label for="name" class="mb-2 block text-sm font-medium text-gray-900">Name</label>
+					<input
+						type="text"
+						name="name"
+						id="name"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="Name"
+						required />
+				</div>
+			</div>
+			<div class="flex items-center space-x-4">
+				<button
+					type="submit"
+					class="rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+					Create group
+				</button>
+			</div>
+		</form>
+		{#if form?.success}
+			<div class="mt-4">
+				<SuccessAlert alert="Success" message="Created new group." />
+			</div>
+		{/if}
+	</div>
 </div>

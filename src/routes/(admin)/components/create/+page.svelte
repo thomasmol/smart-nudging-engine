@@ -1,68 +1,52 @@
 <script lang="ts">
-	import type { ComponentType } from '@prisma/client';
+	import SuccessAlert from '$lib/components/SuccessAlert.svelte';
+	import type { ActionData } from './$types';
 
-	let label: string;
-	let dataType: string;
-	let loading: boolean = false;
-	let result: ComponentType;
-	
-	async function create(event: Event) {
-		loading = true;
-		const form = event.target as HTMLFormElement;
-		const data = new FormData(form);
-		const response = await fetch('/api/components', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				label,
-				dataType
-			})
-		});
-
-		result = await response.json();
-
-		if (result) {
-			console.log('success');
-		}
-		loading = false;
-	}
+	export let form: ActionData;
 </script>
 
 <div class="container">
-	<form on:submit|preventDefault={create} class="max-w-md rounded-lg border bg-white p-6">
-		<h1 class="text-lg font-semibold text-slate-900">Create new component type</h1>
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="label">Label</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={label}
-			type="text"
-			placeholder="Enter a label"
-			required />
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="dateType">Date type</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={dataType}
-			type="text"
-			placeholder="Enter a datatype"
-			required />
-
-		{#if loading}
-			<button
-				disabled
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Adding type...</button>
-		{:else}
-			<button
-				type="submit"
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Submit</button>
-		{/if}
-	</form>
-	{#if result}
-		<div class="mt-2 max-w-md rounded-lg border border-green-100 bg-green-50 p-6">
-			<p>Added <span class="font-semibold">"{result.label}"</span> successfully</p>
+	<div class="mb-4 flex justify-between">
+		<div>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Create new Component Type</h1>
 		</div>
-	{/if}
+	</div>
+	<div class="relative overflow-x-auto rounded-lg border bg-white p-5">
+		<form method="post">
+			<div class="mb-4 grid gap-4 sm:mb-5 sm:grid-cols-2 sm:gap-6">
+				<div class="w-full">
+					<label for="label" class="mb-2 block text-sm font-medium text-gray-900">Label</label>
+					<input
+						type="text"
+						name="label"
+						id="label"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="Label"
+						required />
+				</div>
+				<div class="w-full">
+					<label for="data-type" class="mb-2 block text-sm font-medium text-gray-900"
+						>Data Type</label>
+					<input
+						type="text"
+						name="data_type"
+						id="data-type"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="Data Type" />
+				</div>
+			</div>
+			<div class="flex items-center space-x-4">
+				<button
+					type="submit"
+					class="rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+					Create component type
+				</button>
+			</div>
+		</form>
+		{#if form?.success}
+			<div class="mt-4">
+				<SuccessAlert alert="Success" message="Created new component type." />
+			</div>
+		{/if}
+	</div>
 </div>

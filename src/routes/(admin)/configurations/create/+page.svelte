@@ -1,87 +1,180 @@
 <script lang="ts">
-	import type { Configuration } from '@prisma/client';
+	import SuccessAlert from '$lib/components/SuccessAlert.svelte';
+	import type { ActionData, PageData } from './$types';
 
-	let name: string;
-	let algorithm: string;
-	let reactionWaitTime: number;
-	let startTime: Date;
+	let inputRows = [{ type: 'text', content: 'Generate a nudge that will encourage users to ' }];
 
-	let loading: boolean = false;
-	let result: Configuration;
-
-	async function create() {
-		loading = true;
-		const response = await fetch('/api/configurations', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				name,
-				algorithm,
-				reactionWaitTime,
-				startTime
-			})
-		});
-
-		result = await response.json();
-
-		if (result) {
-			console.log('success');
-		}
-		loading = false;
+	function addInputRow() {
+		inputRows = [...inputRows, { type: 'text', content: '' }];
 	}
+
+	let generate: boolean;
+
+	export let form: ActionData;
+	export let data: PageData;
 </script>
 
 <div class="container">
-	<form on:submit|preventDefault={create} class="max-w-md rounded-lg border bg-white p-6">
-		<h1 class="text-lg font-semibold text-slate-900">Create new component type</h1>
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="label">Label</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={name}
-			type="text"
-			placeholder="Enter a label"
-			required />
-
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="algorithm">Algorithm</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={algorithm}
-			type="text"
-			placeholder="Enter an algorithm"
-			required />
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="reactionWaitTime"
-			>Reaction wait time (seconds)</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={reactionWaitTime}
-			type="number"
-			placeholder="Enter a reaction wait time"
-			required />
-		<label class="mb-2 mt-4 block font-medium text-gray-700" for="startTime">Start datetime</label>
-		<input
-			class="w-full rounded-lg bg-gray-200 p-2"
-			bind:value={startTime}
-			type="datetime-local"
-			placeholder="Enter a date"
-			required />
-
-		{#if loading}
-			<button
-				disabled
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Adding config...</button>
-		{:else}
-			<button
-				type="submit"
-				class="mt-4 w-full rounded-lg bg-slate-500 py-2 px-4 text-white hover:bg-slate-600"
-				>Submit</button>
+	<div class="mb-4 flex justify-between">
+		<header>
+			<h1 class="mb-2 text-xl font-semibold text-slate-800">Create new configuration</h1>
+		</header>
+	</div>
+	<div class="relative overflow-x-auto rounded-lg border bg-white p-5">
+		<form method="post">
+			<div class="mb-4 grid gap-4 sm:mb-5 sm:grid-cols-2 sm:gap-6">
+				<div class="w-full">
+					<label for="name" class="mb-2 block text-sm font-medium text-gray-900">Name</label>
+					<input
+						type="text"
+						name="name"
+						id="name"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="Name"
+						required />
+				</div>
+				<div class="w-full">
+					<label for="algorithm" class="mb-2 block text-sm font-medium text-gray-900"
+						>Algorithm</label>
+					<input
+						type="text"
+						name="algorithm"
+						id="algorithm"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="Algorithm"
+						required />
+				</div>
+				<div class="w-full">
+					<label for="start_datetime" class="mb-2 block text-sm font-medium text-gray-900"
+						>Start datetime</label>
+					<input
+						type="datetime-local"
+						name="start_datetime"
+						id="start_datetime"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
+				</div>
+				<div class="w-full">
+					<label for="end_datetime" class="mb-2 block text-sm font-medium text-gray-900"
+						>End datetime</label>
+					<input
+						type="datetime-local"
+						name="end_datetime"
+						id="end_datetime"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
+				</div>
+				<div class="col-span-2">
+					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
+						>Groups you want to nudge</label>
+					<ul class="grid w-full gap-6 md:grid-cols-4">
+						{#each data.groups as group}
+							<li>
+								<input
+									type="checkbox"
+									name="groups"
+									id="group-{group.id}"
+									value={group.id}
+									class="peer hidden"
+									 />
+								<label
+									for="group-{group.id}"
+									class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-3 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-slate-600 peer-checked:text-gray-600">
+									<div class="block">
+										<div class="w-full text-base font-semibold">{group.name}</div>
+										<div class="w-full text-sm">{group.NudgeeGroup.length} nudgees</div>
+									</div>
+								</label>
+							</li>
+						{/each}
+					</ul>
+				</div>
+				<div class="col-span-2">
+					<label for="content" class="mb-2 block text-sm font-medium text-gray-900"
+						>Generate nudges</label>
+					<input
+						type="checkbox"
+						name="generate"
+						bind:checked={generate}
+						id="generate"
+						class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="generate" />
+				</div>
+				{#if generate && data.componentTypes}
+					<div class="col-span-2">
+						<label for="generate-model" class="mb-2 block text-sm font-medium text-gray-900"
+							>Generate model (model that is used to generate nudges)</label>
+						<select
+							id="generate-model"
+							name="generate_model"
+							class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+							<option value="gpt-4">OpenAI GPT-4</option>
+						</select>
+					</div>
+					<header class="col-span-2">
+						<h2 class="font-semibold">Prompt builder</h2>
+						<h3 class="text-sm text-slate-700">
+							Build a prompt with component types that is used to generate prompts
+						</h3>
+					</header>
+					<p class=" rounded-lg border p-2 font-semibold text-slate-800 ">
+						"{#each inputRows as inputRow}
+							{#if inputRow.type === 'text'}
+								{inputRow.content}
+							{:else if inputRow.type === 'component_type_id'}
+								{#each data.componentTypes as componentType}
+									{#if componentType.id === inputRow.content}
+										<span class="font-bold italic">{componentType.label}</span>
+									{/if}
+								{/each}
+							{/if}
+						{/each}"
+					</p>
+					{#each inputRows as inputRow, i}
+						<div class="col-span-2 flex gap-4">
+							<select
+								bind:value={inputRow.type}
+								name="prompt[type][]"
+								class="focus:ring-primary-500 focus:border-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+								<option value="text">Text</option>
+								<option value="component_type_id">Component Type</option>
+							</select>
+							{#if inputRow.type === 'text'}
+								<input
+									bind:value={inputRow.content}
+									type="text"
+									name="prompt[content][]"
+									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
+									placeholder="Content" />
+							{:else}
+								<select
+									bind:value={inputRow.content}
+									name="prompt[content][]"
+									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+									{#each data.componentTypes as componentType}
+										<option value={componentType.id}>{componentType.label}</option>
+									{/each}
+								</select>
+							{/if}
+						</div>
+					{/each}
+					<button
+						type="button"
+						on:click={addInputRow}
+						class="col-span-2 rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+						Add prompt section</button>
+				{/if}
+			</div>
+			<div class="flex items-center space-x-4">
+				<button
+					type="submit"
+					class="rounded-lg bg-slate-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-slate-800 focus:outline-none focus:ring-4 focus:ring-slate-300">
+					Create configuration
+				</button>
+			</div>
+		</form>
+		{#if form?.success}
+			<div class="mt-4">
+				<SuccessAlert alert="Success" message="Created new configuration." />
+			</div>
 		{/if}
-	</form>
-	{#if result}
-		<div class="mt-2 max-w-md rounded-lg border border-green-100 bg-green-50 p-6">
-			<p>Added <span class="font-semibold">"{result.name}"</span> successfully</p>
-		</div>
-	{/if}
+	</div>
 </div>

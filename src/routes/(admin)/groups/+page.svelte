@@ -6,10 +6,10 @@
 
 <div class="container">
 	<div class="mb-4 flex justify-between">
-		<div>
+		<header>
 			<h1 class="mb-2 text-xl font-semibold text-slate-800">Groups</h1>
-			<h2 class="text-slate-700">An overview of your groups</h2>
-		</div>
+			<h2 class="text-slate-700">Group of nudgees</h2>
+		</header>
 		<div class="">
 			<a
 				href="/groups/create"
@@ -17,16 +17,33 @@
 				>Add new group</a>
 		</div>
 	</div>
-	<div class="grid md:grid-cols-3 gap-8">
-		{#each data.groups as { id, name }}
-			<a
-				href="groups/{id}"
-				class="flex-grow rounded-lg border bg-white hover:border-slate-300 ">
-				<div class="p-4">
-					<h2 class="text-xl font-semibold">{name}</h2>
-				</div>
-				<div class="rounded-b-lg bg-slate-50 p-4 text-blue-800">View details</div>
-			</a>
-		{/each}
+	<div class="relative overflow-x-auto rounded-lg border">
+		<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
+				<tr class="">
+					<th scope="col" class="py-3 px-6"> Name </th>
+					<th scope="col" class="py-3 px-6"> Nudgees Count</th>
+					<th scope="col" class="py-3 px-6" />
+				</tr>
+			</thead>
+			<tbody>
+				{#if data.groups.length === 0}
+					<tr class="border-b bg-white ">
+						<td class="py-4 px-6" colspan="3"> No groups found </td>
+					</tr>
+				{/if}
+				{#each data.groups as { id, name, NudgeeGroup }}
+					<tr class="border-b bg-white ">
+						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
+							{name}
+						</th>
+						<td class="py-4 px-6"> {Object.keys(NudgeeGroup).length} </td>
+						<td class="py-4 px-6">
+							<a href="/groups/{id}" class="text-blue-600 hover:underline">View more</a>
+						</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
 	</div>
 </div>

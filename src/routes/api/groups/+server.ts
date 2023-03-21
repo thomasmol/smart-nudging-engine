@@ -5,7 +5,11 @@ import prisma from '$lib/database';
 export const GET = (async () => {
 	const groups: Group[] = await prisma.group.findMany({
 		include: {
-			NudgeeGroup: true,
+			NudgeeGroup: {
+				include: {
+					Nudgee: true
+				}
+			},
 		}
 	});
 	return new Response(JSON.stringify(groups));

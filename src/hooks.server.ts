@@ -1,12 +1,13 @@
 import { SvelteKitAuth } from '@auth/sveltekit';
 import GitHub from '@auth/core/providers/github';
 import { GITHUB_ID, GITHUB_SECRET } from '$env/static/private';
-import { redirect, type Handle } from '@sveltejs/kit';
+import type { Handle } from '@sveltejs/kit';
 import { sequence } from '@sveltejs/kit/hooks';
 
 const authorization = (async ({ event, resolve }) => {
-	const unprotectedRoutes = ['/login', '/register', '/welcome'];
+	/* const unprotectedRoutes = ['/login', '/register', '/welcome'];
 	// Protect any routes under unprotectedRoutes
+
 	const session = await event.locals.getSession();
 	if (!unprotectedRoutes.includes(event.url.pathname)) {
 		if (!session) {
@@ -16,7 +17,7 @@ const authorization = (async ({ event, resolve }) => {
 		if (session) {
 			throw redirect(303, '/');
 		}
-	}
+	} */
 
 	// If the request is still here, just proceed as normally
 	const result = await resolve(event, {
@@ -26,7 +27,7 @@ const authorization = (async ({ event, resolve }) => {
 }) satisfies Handle;
 
 export const handle = sequence(
-	SvelteKitAuth({
+	/* SvelteKitAuth({
 		providers: [
 			//@ts-expect-error issue https://github.com/nextauthjs/next-auth/issues/6174
 			GitHub({
@@ -34,6 +35,6 @@ export const handle = sequence(
 				clientSecret: GITHUB_SECRET
 			})
 		]
-	}),
+	}), */
 	authorization
 ) satisfies Handle;
