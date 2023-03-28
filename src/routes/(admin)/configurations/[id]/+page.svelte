@@ -19,6 +19,7 @@
 					<th scope="col" class="py-3 px-6"> Algorithm</th>
 					<th scope="col" class="py-3 px-6"> Generate</th>
 					<th scope="col" class="py-3 px-6"> Generate model</th>
+					<th scope="col" class="py-3 px-6"> Decision Time Weight</th>
 					<th scope="col" class="py-3 px-6"> Start datetime</th>
 					<th scope="col" class="py-3 px-6"> End datetime</th>
 					<th scope="col" class="py-3 px-6" />
@@ -32,6 +33,7 @@
 					<td class="py-4 px-6"> {data.configuration.algorithm} </td>
 					<td class="py-4 px-6"> {data.configuration.generate} </td>
 					<td class="py-4 px-6"> {data.configuration.generate_model} </td>
+					<td class="py-4 px-6"> {data.configuration.decision_time_weight} </td>
 					<td class="py-4 px-6"> {data.configuration.start_datetime} </td>
 					<td class="py-4 px-6"> {data.configuration.end_datetime} </td>
 					<td class="py-4 px-6">

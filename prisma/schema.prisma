@@ -14,6 +14,7 @@ model Nudgee {
   NudgeeGroup    NudgeeGroup[]
   NudgeRecipient NudgeRecipient[]
   Action         Action[]
+  NudgeeWeights  NudgeeWeights[]
 
   @@map("nudgees")
 }
@@ -74,11 +75,12 @@ model UsedComponent {
 }
 
 model MetricType {
-  id          String        @id @default(uuid()) @db.Uuid
-  label       String
-  type        String
-  Action      Action[]
-  NudgeMetric NudgeMetric[]
+  id               String             @id @default(uuid()) @db.Uuid
+  label            String
+  type             String
+  Action           Action[]
+  NudgeMetric      NudgeMetric[]
+  MetricTypeWeight MetricTypeWeight[]
 
   @@map("metric_types")
 }
@@ -112,11 +114,14 @@ model Configuration {
   generate             Boolean  @default(false)
   generate_model       String?
   deconstructed_prompt Json?
+  decision_time_weight Float    @default(0.5)
   start_datetime       DateTime @db.Timestamptz(6)
   end_datetime         DateTime @db.Timestamptz(6)
   created_at           DateTime @default(now()) @db.Timestamptz(6)
 
   GroupConfiguration GroupConfiguration[]
+  MetricTypeWeight   MetricTypeWeight[]
+  NudgeeWeights      NudgeeWeights[]
 
   @@map("configurations")
 }
@@ -151,4 +156,26 @@ model GroupConfiguration {
 
   @@id([group_id, configuration_id])
   @@map("group_configurations")
+}
+
+model MetricTypeWeight {
+  configuration_id String        @db.Uuid
+  metric_type_id   String        @db.Uuid
+  weight           Float         @default(0.5)
+  Configuration    Configuration @relation(fields: [configuration_id], references: [id], onDelete: Cascade)
+  MetricType       MetricType    @relation(fields: [metric_type_id], references: [id], onDelete: Cascade)
+
+  @@id([configuration_id, metric_type_id])
+  @@map("metric_type_weights")
+}
+
+model NudgeeWeights {
+  nudgee_id        String        @db.Uuid
+  configuration_id String        @db.Uuid
+  weights          Json
+  Nudgee           Nudgee        @relation(fields: [nudgee_id], references: [id], onDelete: Cascade)
+  Configuration    Configuration @relation(fields: [configuration_id], references: [id], onDelete: Cascade)
+
+  @@id([nudgee_id, configuration_id])
+  @@map("nudgee_weights")
 }

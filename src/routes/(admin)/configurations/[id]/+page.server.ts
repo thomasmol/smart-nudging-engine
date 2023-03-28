@@ -19,6 +19,7 @@ export const actions = {
 		const start_datetime = data.get('start_datetime');
 		const end_datetime = data.get('end_datetime');
 		const algorithm = data.get('algorithm');
+		const decision_time_weight = parseFloat(data.get('decision_time_weight') as string);
 		const groups = data.getAll('groups');
 		const prompt_types = data.getAll('prompt[type][]');
 		const prompt_contents = data.getAll('prompt[content][]');
@@ -47,6 +48,7 @@ export const actions = {
 				generate_model,
 				algorithm,
 				deconstructed_prompt,
+				decision_time_weight,
 				groups
 			})
 		});

@@ -14,7 +14,9 @@ export const GET = (async ({ params }) => {
 						}
 					}
 				}
-			}
+			},
+			MetricTypeWeight: true,
+			NudgeeWeights: true
 		}
 	});
 	return new Response(JSON.stringify(configuration));
@@ -27,6 +29,7 @@ export const PUT = (async ({ request, params }) => {
 		generate,
 		generate_model,
 		deconstructed_prompt,
+		decision_time_weight,
 		start_datetime,
 		end_datetime,
 		groups
@@ -51,6 +54,7 @@ export const PUT = (async ({ request, params }) => {
 			generate: generate,
 			generate_model: generate_model,
 			deconstructed_prompt: deconstructed_prompt,
+			decision_time_weight: decision_time_weight,
 			start_datetime: new Date(start_datetime),
 			end_datetime: new Date(end_datetime),
 			GroupConfiguration: {

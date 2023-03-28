@@ -49,6 +49,21 @@
 						required />
 				</div>
 				<div class="w-full">
+					<label for="weight" class="mb-2 block text-sm font-medium text-gray-900"
+						>Decision Time Weight</label>
+					<input
+						type="number"
+						name="decision_time_weight"
+						id="weight"
+						min="0"
+						max="1"
+						step="0.001"
+						value="{data.configuration.decision_time_weight}"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="0.556"
+						required />
+				</div>
+				<div class="w-full">
 					<label for="start_datetime" class="mb-2 block text-sm font-medium text-gray-900"
 						>Start datetime</label>
 					<input
