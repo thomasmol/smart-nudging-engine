@@ -129,6 +129,7 @@ model Configuration {
 model Group {
   id         String   @id @default(uuid()) @db.Uuid
   name       String
+  control    Boolean  @default(false)
   created_at DateTime @default(now()) @db.Timestamptz(6)
 
   NudgeeGroup        NudgeeGroup[]
@@ -150,7 +151,6 @@ model NudgeeGroup {
 model GroupConfiguration {
   group_id         String        @db.Uuid
   configuration_id String        @db.Uuid
-  is_nudged        Boolean       @default(false)
   Group            Group         @relation(fields: [group_id], references: [id], onDelete: Cascade)
   Configuration    Configuration @relation(fields: [configuration_id], references: [id], onDelete: Cascade)
 

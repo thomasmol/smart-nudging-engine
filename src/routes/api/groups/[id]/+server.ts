@@ -19,8 +19,8 @@ export const GET = (async ({ params }) => {
 }) satisfies RequestHandler;
 
 export const PUT = (async ({ request, params }) => {
-	const { name } = await request.json();
-	if (!name) {
+	const { name, control } = await request.json();
+	if (!name || control == null) {
 		throw new Error('Missing required params');
 	}
 
@@ -29,7 +29,8 @@ export const PUT = (async ({ request, params }) => {
 			id: params.id
 		},
 		data: {
-			name
+			name,
+			control
 		},
 		include: {
 			NudgeeGroup: {

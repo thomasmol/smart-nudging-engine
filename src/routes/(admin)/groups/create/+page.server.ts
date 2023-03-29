@@ -4,7 +4,8 @@ export const actions = {
 	default: async ({ request, fetch }) => {
 		const data = await request.formData();
 		const name = data.get('name');
-		if (!name) {
+		const control = data.has('control');
+		if (!name || control == null) {
 			return {
 				success: false
 			};
@@ -15,7 +16,8 @@ export const actions = {
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				name
+				name,
+				control
 			})
 		});
 

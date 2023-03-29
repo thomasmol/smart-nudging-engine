@@ -94,9 +94,12 @@
 									<div class="block">
 										<div class="w-full text-base font-semibold">{group.name}</div>
 										<div class="w-full text-sm">{group.NudgeeGroup.length} nudgees</div>
+										{#if group.control}
+											<div class="w-full text-sm italic">is control group</div>
+										{/if}
 									</div>
 								</label>
-								
+
 							</li>
 						{/each}
 					</ul>

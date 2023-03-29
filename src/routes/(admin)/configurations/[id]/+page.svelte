@@ -56,6 +56,9 @@
 						<div class="block">
 							<div class="w-full text-base font-semibold">{Group.name}</div>
 							<div class="w-full text-sm">{Group.NudgeeGroup.length} nudgees</div>
+							{#if Group.control}
+								<div class="w-full text-sm italic">is control group</div>
+							{/if}
 						</div>
 					</div>
 				</li>

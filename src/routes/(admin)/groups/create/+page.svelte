@@ -24,6 +24,15 @@
 						placeholder="Name"
 						required />
 				</div>
+				<div class="col-span-2">
+					<label for="control" class="mb-2 block text-sm font-medium text-gray-900"
+						>Is this a control group (will not be nudged)</label>
+					<input
+						type="checkbox"
+						name="control"
+						id="control"
+						class="rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
+				</div>
 			</div>
 			<div class="flex items-center space-x-4">
 				<button
