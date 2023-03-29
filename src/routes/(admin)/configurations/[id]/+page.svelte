@@ -47,7 +47,7 @@
 	</div>
 
 	{#if data.configuration.GroupConfiguration.length > 0}
-		<h2 class="text-semibold mt-10 text-lg">Groups</h2>
+		<h2 class="mt-14 text-lg font-semibold">Groups</h2>
 		<ul class="mt-2 grid w-full gap-6 md:grid-cols-4">
 			{#each data.configuration.GroupConfiguration as { Group }}
 				<li>
@@ -66,9 +66,33 @@
 		</ul>
 	{/if}
 
+	{#if data.configuration.MetricTypeWeight.length > 0}
+		<div class="relative mt-10 overflow-x-auto rounded-lg border">
+			<h2 class="border-b p-4 text-lg font-semibold">Metric Type weights</h2>
+			<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+				<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
+					<tr class="">
+						<th scope="col" class="py-3 px-6">Type</th>
+						<th scope="col" class="py-3 px-6">Weight</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each data.configuration.MetricTypeWeight as metricTypeWeight}
+						<tr class="border-b bg-white ">
+							<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
+								{metricTypeWeight.MetricType.label}
+							</th>
+							<td class="py-4 px-6"> {metricTypeWeight.weight} </td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{/if}
+
 	{#if data.configuration.generate && data.configuration.deconstructed_prompt}
-		<h2 class="text-semibold mt-10 text-lg">Prompt</h2>
-		<div class="relative mt-4 overflow-x-auto rounded-lg border">
+		<div class="relative mt-10 overflow-x-auto rounded-lg border">
+			<h2 class="border-b p-4 text-lg font-semibold">Prompt</h2>
 			<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 				<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 					<tr class="">
@@ -90,6 +114,36 @@
 								<td class="py-4 px-6"> {prompt.content} </td>
 							{/if}
 						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{/if}
+
+	{#if data.configuration.GroupConfiguration}
+		<div class="relative mt-10 overflow-x-auto rounded-lg border">
+			<h2 class="border-b p-4 text-lg font-semibold">Nudges</h2>
+			<table class="w-full text-left text-sm text-gray-500 ">
+				<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700 ">
+					<tr class="">
+						<th scope="col" class="py-3 px-6">Nudgee</th>
+						<th scope="col" class="py-3 px-6">Content</th>
+						<th scope="col" class="py-3 px-6">Effectiveness</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each data.configuration.GroupConfiguration as { Group }}
+						{#each Group.NudgeeGroup as { Nudgee }, index}
+							{#each Nudgee.NudgeRecipient as { Nudge }}
+								<tr class="border-b bg-white ">
+									<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
+										{Nudgee.id}
+									</th>
+									<td class="py-4 px-6">{Nudge.content}</td>
+									<td class="py-4 px-6">{data.compositeScores[index]}</td>
+								</tr>
+							{/each}
+						{/each}
 					{/each}
 				</tbody>
 			</table>

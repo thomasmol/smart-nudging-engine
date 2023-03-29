@@ -14,13 +14,16 @@ const prisma = new PrismaClient();
 const main = async () => {
 	const group1 = await prisma.group.create({
 		data: {
-			name: 'Control group'
+			name: 'Group one',
+			control: false
+
 		}
 	});
 
 	const group2 = await prisma.group.create({
 		data: {
-			name: 'Some other group'
+			name: 'Control group',
+			control: true
 		}
 	});
 
@@ -152,7 +155,7 @@ const main = async () => {
 					data: {
 						nudgee_id: nudgee.id,
 						metric_type_id: metricType.id,
-						metric_value: '1'
+						metric_value: 1
 					}
 				});
 			} else if (metricType.label === 'steps') {
@@ -160,7 +163,7 @@ const main = async () => {
 					data: {
 						nudgee_id: nudgee.id,
 						metric_type_id: metricType.id,
-						metric_value: faker.datatype.number({ min: 500, max: 10000 }).toString()
+						metric_value: faker.datatype.number({ min: 1000, max: 10000 })
 					}
 				});
 			} else if (metricType.label === 'calories') {
@@ -168,7 +171,7 @@ const main = async () => {
 					data: {
 						nudgee_id: nudgee.id,
 						metric_type_id: metricType.id,
-						metric_value: faker.datatype.number({ min: 500, max: 1000 }).toString()
+						metric_value: faker.datatype.number({ min: 500, max: 1000 })
 					}
 				});
 			}
@@ -192,7 +195,7 @@ const main = async () => {
 			data: {
 				name: 'Example Configuration ' + i,
 				algorithm: faker.helpers.arrayElement(['algorithm1', 'algorithm2', 'algorithm3']),
-				generate: faker.datatype.boolean(),
+				generate: false,
 				generate_model: faker.system.commonFileName('model'),
 				start_datetime: faker.date.past(),
 				end_datetime: faker.date.future()

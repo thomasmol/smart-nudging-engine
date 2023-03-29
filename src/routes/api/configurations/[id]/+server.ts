@@ -10,12 +10,33 @@ export const GET = (async ({ params }) => {
 				include: {
 					Group: {
 						include: {
-							NudgeeGroup: true
+							NudgeeGroup: {
+								include: {
+									Nudgee: {
+										include: {
+											NudgeRecipient: {
+												include: {
+													Nudge: true
+												}
+											},
+											Action: {
+												include: {
+													MetricType: true
+												}
+											}
+										}
+									}
+								}
+							}
 						}
 					}
 				}
 			},
-			MetricTypeWeight: true,
+			MetricTypeWeight: {
+				include: {
+					MetricType: true
+				}
+			},
 			NudgeeWeights: true
 		}
 	});
@@ -32,7 +53,8 @@ export const PUT = (async ({ request, params }) => {
 		decision_time_weight,
 		start_datetime,
 		end_datetime,
-		groups
+		groups,
+		metric_type_weights_zipped
 	} = await request.json();
 	const { id } = params;
 	if (!id || !name || !algorithm || !start_datetime || !end_datetime) {
@@ -41,6 +63,13 @@ export const PUT = (async ({ request, params }) => {
 
 	// easier than trying to figure out how to do this in one query
 	await prisma.groupConfiguration.deleteMany({
+		where: {
+			configuration_id: id
+		}
+	});
+
+	// easier than trying to figure out how to do this in one query
+	await prisma.metricTypeWeight.deleteMany({
 		where: {
 			configuration_id: id
 		}
@@ -61,6 +90,9 @@ export const PUT = (async ({ request, params }) => {
 				create: groups.map((group: any) => ({
 					group_id: group
 				}))
+			},
+			MetricTypeWeight: {
+				createMany: { data: metric_type_weights_zipped }
 			}
 		}
 	});

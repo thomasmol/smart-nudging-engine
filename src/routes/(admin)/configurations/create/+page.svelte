@@ -99,7 +99,6 @@
 										{/if}
 									</div>
 								</label>
-
 							</li>
 						{/each}
 					</ul>

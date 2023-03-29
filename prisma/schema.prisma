@@ -89,7 +89,7 @@ model Action {
   id             String     @id @default(uuid()) @db.Uuid
   nudgee_id      String     @db.Uuid
   metric_type_id String     @db.Uuid
-  metric_value   String
+  metric_value   Int
   created_at     DateTime   @default(now()) @db.Timestamptz(6)
   Nudgee         Nudgee     @relation(fields: [nudgee_id], references: [id])
   MetricType     MetricType @relation(fields: [metric_type_id], references: [id])

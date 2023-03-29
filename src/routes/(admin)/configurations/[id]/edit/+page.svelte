@@ -5,10 +5,12 @@
 	export let data: PageData;
 
 	let generate = false;
-	let inputRows : any = [{ type: 'text', content: 'Generate a nudge that will encourage users to ' }];
+	let inputRows: any = [
+		{ type: 'text', content: 'Generate a nudge that will encourage users to ' }
+	];
 	if (data.configuration.generate) {
-		 generate = data.configuration.generate;
-		 inputRows = data.configuration.deconstructed_prompt;
+		generate = data.configuration.generate;
+		inputRows = data.configuration.deconstructed_prompt;
 	}
 	function addInputRow() {
 		inputRows = [...inputRows, { type: 'text', content: '' }];
@@ -30,7 +32,7 @@
 					<input
 						type="text"
 						name="name"
-						value="{data.configuration.name}"
+						value={data.configuration.name}
 						id="name"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
 						placeholder="Name"
@@ -42,7 +44,7 @@
 					<input
 						type="text"
 						name="algorithm"
-						value="{data.configuration.algorithm}"
+						value={data.configuration.algorithm}
 						id="algorithm"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
 						placeholder="Algorithm"
@@ -58,7 +60,7 @@
 						min="0"
 						max="1"
 						step="0.001"
-						value="{data.configuration.decision_time_weight}"
+						value={data.configuration.decision_time_weight}
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
 						placeholder="0.556"
 						required />
@@ -69,7 +71,7 @@
 					<input
 						type="datetime-local"
 						name="start_datetime"
-						value="{new Date(data.configuration.start_datetime).toISOString().slice(0, -8)}"
+						value={new Date(data.configuration.start_datetime).toISOString().slice(0, -8)}
 						id="start_datetime"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 				</div>
@@ -79,7 +81,7 @@
 					<input
 						type="datetime-local"
 						name="end_datetime"
-						value="{new Date(data.configuration.end_datetime).toISOString().slice(0, -8)}"
+						value={new Date(data.configuration.end_datetime).toISOString().slice(0, -8)}
 						id="end_datetime"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 				</div>
@@ -92,11 +94,12 @@
 								<input
 									type="checkbox"
 									name="groups"
-									checked={data.configuration.GroupConfiguration.some((groupConfig) => groupConfig.group_id === group.id)}
+									checked={data.configuration.GroupConfiguration.some(
+										(groupConfig) => groupConfig.group_id === group.id
+									)}
 									id="group-{group.id}"
 									value={group.id}
-									class="peer hidden"
-									 />
+									class="peer hidden" />
 								<label
 									for="group-{group.id}"
 									class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-3 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-slate-600 peer-checked:text-gray-600">
@@ -108,6 +111,33 @@
 										{/if}
 									</div>
 								</label>
+							</li>
+						{/each}
+					</ul>
+				</div>
+				<div class="col-span-2">
+					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
+						>Metric type weights (how much does each metric contribute to nudge effectiveness)</label>
+					<ul class="space-y-4">
+						{#each data.metricTypes as metricType}
+							<li class="flex w-full items-center gap-4">
+								<label for="metric-type-weight-{metricType.id}" class="flex-1"
+									>{metricType.label}</label>
+								<input type="hidden" name="metric_types" value={metricType.id} />
+								<input
+									type="number"
+									min="0"
+									max="1"
+									step="0.001"
+									value={data.configuration.MetricTypeWeight.find(
+										(metricTypeWeight) => metricTypeWeight.metric_type_id === metricType.id
+									)
+										? data.configuration.MetricTypeWeight.find(
+												(metricTypeWeight) => metricTypeWeight.metric_type_id === metricType.id
+										  ).weight
+										: 0}
+									name="metric_type_weights"
+									class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 							</li>
 						{/each}
 					</ul>
