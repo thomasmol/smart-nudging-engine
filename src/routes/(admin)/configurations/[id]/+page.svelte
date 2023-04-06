@@ -92,7 +92,15 @@
 
 	{#if data.configuration.generate && data.configuration.deconstructed_prompt}
 		<div class="relative mt-10 overflow-x-auto rounded-lg border">
-			<h2 class="border-b p-4 text-lg font-semibold">Prompt</h2>
+			<header class="flex items-center justify-between border-b p-4">
+				<h2 class=" text-lg font-semibold">Prompt</h2>
+				<form method="post">
+					<button
+						type="submit"
+						formaction="/configurations/{data.configuration.id}?/generate"
+						class="rounded-lg bg-blue-600 px-2 py-1 text-white">Generate a new nudge</button>
+				</form>
+			</header>
 			<table class="w-full text-left text-sm text-gray-500 dark:text-gray-400">
 				<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 					<tr class="">
@@ -135,13 +143,21 @@
 					{#each data.configuration.GroupConfiguration as { Group }}
 						{#each Group.NudgeeGroup as { Nudgee }, index}
 							{#each Nudgee.NudgeRecipient as { Nudge }}
-								<tr class="border-b bg-white ">
+								<tr class="bg-white ">
 									<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
 										{Nudgee.id}
 									</th>
 									<td class="py-4 px-6">{Nudge.content}</td>
 									<td class="py-4 px-6">{data.compositeScores[index]}</td>
 								</tr>
+								<tr class="border-b bg-white ">
+									<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
+									<button class="bg-slate-600 text-white px-3 py-2 rounded-lg">Update weights</button>
+									</th>
+									<td class="py-4 px-6">Weights: {data.configuration.NudgeeWeights[0]}</td>
+									<td></td>
+								</tr>
+
 							{/each}
 						{/each}
 					{/each}

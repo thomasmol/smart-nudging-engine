@@ -61,12 +61,14 @@ export const load = (async ({ params, fetch }) => {
 
 			compositeScore += 1/(timeDifference * configuration.decision_time_weight);
 		});
-		compositeScore = compositeScore / actionsAfterNudge.length;
+		compositeScore = compositeScore / (actionsAfterNudge.length*2);
 		compositeScores.push(compositeScore);
 	});
 
 	const responseComponents = await fetch('/api/components');
 	const componentTypes: ComponentType[] = await responseComponents.json();
+
+
 	return { configuration, componentTypes, compositeScores };
 }) satisfies PageServerLoad;
 
@@ -134,5 +136,18 @@ export const actions = {
 			method: 'DELETE'
 		});
 		throw redirect(303, '/configurations');
+	},
+	generate: async ({ params, fetch }) => {
+		const response = await fetch(`/api/configurations/${params.id}/generate`, {
+			method: 'POST'
+		});
+		if (!response.ok) {
+			return {
+				success: false
+			};
+		}
+		return {
+			success: true
+		};
 	}
 } satisfies Actions;

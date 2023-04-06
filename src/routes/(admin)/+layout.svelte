@@ -13,52 +13,53 @@
 		{ path: '/actions', label: 'Actions' },
 		{ path: '/nudges', label: 'Nudges' },
 		{ path: '/components', label: 'Components' },
-		{ path: '/metrics', label: 'Metrics' },
+		{ path: '/metrics', label: 'Metrics' }
 	];
 </script>
 
-<div class="flex h-screen justify-between">
-	<aside
-		class="fixed inset-y-0 left-0 z-50 h-full transform border-r border-slate-200 bg-white text-slate-700 md:block md:h-auto md:transform-none
-		{isOpen
-			? 'translate-x-0'
-			: '-translate-x-full'} transition duration-300 ease-in-out md:static md:translate-x-0">
+<nav
+	class="fixed border-b top-0 z-50 w-full bg-white">
+	<div class="container flex items-center justify-between ">
+		<a href="/" class="font-bold text-slate-700 text-sm italic">🔬</a>
 		<button
-			class="absolute top-0 right-0 mt-2 mr-2 text-xl text-slate-800 focus:outline-none md:hidden"
-			on:click={() => (isOpen = !isOpen)}>
-			x
-		</button>
-		<div class="flex h-full flex-col">
-			<h1 class="py-4 px-2 text-center text-2xl font-bold text-slate-800 md:px-0">NaaS</h1>
-			<div class="flex w-full flex-col text-sm font-semibold md:w-auto md:text-base">
-				{#each pages as { path, label }}
-					<a
-						class:bg-slate-100={$page.url.pathname === path ||
-							($page.url.pathname.startsWith(path) && path !== '/')}
-						href={path}
-						class="flex cursor-pointer items-center gap-2 px-8 py-5 hover:bg-slate-100"
-						on:click={() => (isOpen = false)}>
-						<span class="h-1 w-2 rounded-full bg-slate-300" />
-						<span>{label}</span>
-					</a>
-				{/each}
-			</div>
-		</div>
-	</aside>
-	<div class="w-full max-w-6xl ">
-		<button
-			class="m-2 rounded-lg border bg-white px-2 py-1 text-sm font-bold text-slate-800 focus:outline-none md:hidden"
+			class=" rounded-lg border my-3 bg-white px-2 py-1 text-sm font-bold text-slate-800 focus:outline-none lg:hidden"
 			on:click={() => (isOpen = !isOpen)}>
 			☰ Menu
 		</button>
-		<div class="container">
-			<Breadcrumb path={$page.url.pathname} />
+		<div class="hidden lg:flex lg:justify-center lg:items-center lg:h-full lg:w-full ">
+			{#each pages as { path, label }}
+				<a
+					class:bg-slate-100={$page.url.pathname === path ||
+						($page.url.pathname.startsWith(path) && path !== '/')}
+					href={path}
+					class="inline-block cursor-pointer py-5 font-semibold text-sm px-6 hover:bg-slate-100 "
+					on:click={() => (isOpen = false)}>
+					<span>{label}</span>
+				</a>
+			{/each}
 		</div>
-		{#if $navigating}
-			<MainPageShiver />
-		{:else}
-			<slot />
-		{/if}
 	</div>
-	<div />
+	<div class="{isOpen ? 'block' : 'hidden'} flex flex-col w-full border-b shadow-sm text-center lg:hidden bg-white">
+		{#each pages as { path, label }}
+			<a
+				class:bg-slate-100={$page.url.pathname === path ||
+					($page.url.pathname.startsWith(path) && path !== '/')}
+				href={path}
+				class="cursor-pointer py-3 px-6 hover:bg-slate-100"
+				on:click={() => (isOpen = false)}>
+				<span>{label}</span>
+			</a>
+		{/each}
+	</div>
+</nav>
+
+<div class="mt-16 pb-10">
+	<div class="container">
+		<Breadcrumb path={$page.url.pathname} />
+	</div>
+	{#if $navigating}
+		<MainPageShiver />
+	{:else}
+		<slot />
+	{/if}
 </div>
