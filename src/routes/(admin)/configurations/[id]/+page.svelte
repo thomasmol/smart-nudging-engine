@@ -1,9 +1,17 @@
 <script lang="ts">
+	import type { ComponentValue } from '@prisma/client';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
-</script>
 
+	// flatten data.componentTypes, which is an array of objects,
+	// which has an attribute ComponentValue which is an array of ComponentValue objects,
+	// into a single array of component values
+	const componentValues: ComponentValue[] = data.componentTypes.reduce(
+		(acc, componentType) => [...acc, ...componentType.ComponentValue],
+		[]
+	);
+</script>
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
@@ -152,12 +160,20 @@
 								</tr>
 								<tr class="border-b bg-white ">
 									<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
-									<button class="bg-slate-600 text-white px-3 py-2 rounded-lg">Update weights</button>
+										<button class="rounded-lg bg-slate-600 px-3 py-2 text-white"
+											>Update weights</button>
 									</th>
-									<td class="py-4 px-6">Weights: {data.configuration.NudgeeWeights[0]}</td>
-									<td></td>
+									<td class=" py-4 px-6" colspan="2">
+										Weights:
+										{#each data.configuration.NudgeeWeights as { nudgee_id, weights }}
+											{#if nudgee_id == Nudgee.id}
+												{#each weights as { component_value_id, weight }}
+													{componentValues.find((element) => element.id == component_value_id)?.value} ({weight}), &nbsp;
+												{/each}
+											{/if}
+										{/each}
+									</td>
 								</tr>
-
 							{/each}
 						{/each}
 					{/each}

@@ -57,7 +57,7 @@ export const load = (async ({ params, fetch }) => {
 
 			// get time difference between nudge and action
 			const timeDifference: number =
-				new Date(action.created_at).getTime() - new Date(nudgeRecipient.created_at).getTime();
+			new Date(action.created_at).getTime() - new Date(nudgeRecipient.created_at).getTime();
 
 			compositeScore += 1/(timeDifference * configuration.decision_time_weight);
 		});
@@ -67,7 +67,6 @@ export const load = (async ({ params, fetch }) => {
 
 	const responseComponents = await fetch('/api/components');
 	const componentTypes: ComponentType[] = await responseComponents.json();
-
 
 	return { configuration, componentTypes, compositeScores };
 }) satisfies PageServerLoad;

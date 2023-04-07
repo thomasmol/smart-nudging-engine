@@ -4,7 +4,8 @@ import type {
 	Configuration,
 	MetricType,
 	Nudge,
-	Nudgee
+	Nudgee,
+	Prisma
 } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
@@ -16,7 +17,6 @@ const main = async () => {
 		data: {
 			name: 'Group one',
 			control: false
-
 		}
 	});
 
@@ -28,8 +28,8 @@ const main = async () => {
 	});
 
 	// Create mock data for other tables
-	const componentTypeLabels = ['Category', 'Channel', 'Time'];
-	const dataTypes = ['text', 'text', 'text'];
+	const componentTypeLabels = ['Category', 'Channel', 'Time', 'Action'];
+	const dataTypes = ['text', 'text', 'text', 'text'];
 	const componentTypes: ComponentType[] = [];
 	for (let i = 0; i < componentTypeLabels.length; i++) {
 		const componentType = await prisma.componentType.create({
@@ -44,7 +44,8 @@ const main = async () => {
 	const values = [
 		['simplification', 'social norm', 'reminder', 'feedback', 'goal setting'],
 		['email', 'sms', 'push notification', 'in-app notification'],
-		['morning', 'afternoon', 'evening']
+		['morning', 'afternoon', 'evening'],
+		['walk', 'run', 'exercise']
 	];
 	const componentValues: ComponentValue[] = [];
 	for (const [index, componentType] of componentTypes.entries()) {
@@ -190,18 +191,66 @@ const main = async () => {
 	}
 
 	const configurations: Configuration[] = [];
+	const deconstructedPrompt = [
+		{ type: 'text', content: 'Create a nudge that will encourage people to' },
+		{ type: 'component_type_id', content: componentTypes[3].id },
+		{ type: 'text', content: 'at the time of' },
+		{ type: 'component_type_id', content: componentTypes[2].id }
+	];
 	for (let i = 0; i < 2; i++) {
 		const configuration = await prisma.configuration.create({
 			data: {
 				name: 'Example Configuration ' + i,
 				algorithm: faker.helpers.arrayElement(['algorithm1', 'algorithm2', 'algorithm3']),
-				generate: false,
-				generate_model: faker.system.commonFileName('model'),
+				generate: true,
+				generate_model: 'GPT-4',
+				decision_time_weight: faker.datatype.float({ min: 0.1, max: 1 }),
+				deconstructed_prompt: deconstructedPrompt,
 				start_datetime: faker.date.past(),
-				end_datetime: faker.date.future()
+				end_datetime: faker.date.future(),
+				MetricTypeWeight: {
+					createMany: {
+						data: metricTypes.map((mt) => {
+							return {
+								metric_type_id: mt.id,
+								weight: faker.datatype.float({ min: 0.001, max: 1 })
+							};
+						})
+					}
+				},
+				GroupConfiguration: {
+					createMany: {
+						data: [
+							{
+								group_id: group1.id
+							},
+							{ group_id: group2.id }
+						]
+					}
+				}
 			}
 		});
+
 		configurations.push(configuration);
+	}
+	// Generate NudgeeWeights data
+	for (const nudgee of nudgees) {
+		for (const configuration of configurations) {
+			const weightsData: Prisma.JsonArray = [];
+			for (const componentValue of componentValues) {
+				weightsData.push({
+					component_value_id: componentValue.id,
+					weight: faker.datatype.float({ min: 0, max: 1 })
+				});
+			}
+			await prisma.nudgeeWeights.create({
+				data: {
+					nudgee_id: nudgee.id,
+					configuration_id: configuration.id,
+					weights:weightsData
+				}
+			});
+		}
 	}
 };
 
