@@ -12,6 +12,7 @@
 		[]
 	);
 </script>
+
 <div class="container">
 	<div class="mb-4 flex justify-between">
 		<div>
@@ -159,19 +160,22 @@
 									<td class="py-4 px-6">{data.compositeScores[index]}</td>
 								</tr>
 								<tr class="border-b bg-white ">
-									<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900 ">
+									<td colspan="3" class="py-4 px-6  text-gray-700 ">
 										<button class="rounded-lg bg-slate-600 px-3 py-2 text-white"
 											>Update weights</button>
-									</th>
-									<td class=" py-4 px-6" colspan="2">
-										Weights:
-										{#each data.configuration.NudgeeWeights as { nudgee_id, weights }}
-											{#if nudgee_id == Nudgee.id}
-												{#each weights as { component_value_id, weight }}
-													{componentValues.find((element) => element.id == component_value_id)?.value} ({weight}), &nbsp;
-												{/each}
-											{/if}
-										{/each}
+										<p class="mt-2 font-semibold">Nudgee weights:</p>
+										<div class="grid grid-cols-3 mt-2 font-mono gap-3">
+											{#each data.configuration.NudgeeWeights as { nudgee_id, weights }}
+												{#if nudgee_id == Nudgee.id}
+													{#each weights as { component_value_id, weight }}
+														<div class="flex justify-between p-1 ">
+															{componentValues.find((element) => element.id == component_value_id)
+																?.value}:<span class="font-bold">{weight}</span>
+														</div>
+													{/each}
+												{/if}
+											{/each}
+										</div>
 									</td>
 								</tr>
 							{/each}
