@@ -161,10 +161,17 @@
 								</tr>
 								<tr class="border-b bg-white ">
 									<td colspan="3" class="py-4 px-6  text-gray-700 ">
-										<button class="rounded-lg bg-slate-600 px-3 py-2 text-white"
-											>Update weights</button>
+										<form method="post">
+											<input type="hidden" name="effectiveness" value="{data.compositeScores[index]}">
+											<input type="hidden" name="nudgee" value="{Nudgee.id}">
+											<input type="hidden" name="nudge" value="{Nudge.id}">
+											<button
+												type="submit"
+												formaction="/configurations/{data.configuration.id}?/updateNudgeeWeights"
+												class="rounded-lg bg-slate-600 px-3 py-2 text-white">Update weights</button>
+										</form>
 										<p class="mt-2 font-semibold">Nudgee weights:</p>
-										<div class="grid grid-cols-3 mt-2 font-mono gap-3">
+										<div class="mt-2 grid grid-cols-3 gap-3 font-mono">
 											{#each data.configuration.NudgeeWeights as { nudgee_id, weights }}
 												{#if nudgee_id == Nudgee.id}
 													{#each weights as { component_value_id, weight }}

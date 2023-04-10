@@ -1,10 +1,20 @@
-import type { Action, ComponentType, Configuration, Nudge, NudgeRecipient } from '@prisma/client';
+import type {
+	Action,
+	ComponentType,
+	Configuration,
+	MetricType,
+	Nudge,
+	NudgeRecipient
+} from '@prisma/client';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
 export const load = (async ({ params, fetch }) => {
 	const response = await fetch(`/api/configurations/${params.id}`);
 	const configuration: Configuration = await response.json();
+
+	const responseMetricTypes = await fetch(`/api/metrics`);
+	const metricTypes: MetricType[] = await responseMetricTypes.json();
 
 	// calculate effectiveness for each nudge
 	const actions: Action[] = configuration.GroupConfiguration.reduce((acc, groupConfiguration) => {
@@ -33,6 +43,32 @@ export const load = (async ({ params, fetch }) => {
 		[]
 	);
 
+	// get min and max values for each metric_types metric_value
+	const minMaxValues: Record<string, { min: number; max: number }> = {};
+	metricTypes.forEach((metricType) => {
+		const min = Math.min(
+			...actions
+				.filter((action) => {
+					return action.metric_type_id === metricType.id;
+				})
+				.map((action) => {
+					return action.metric_value;
+				}),
+			0.0001
+		);
+		const max = Math.max(
+			...actions
+				.filter((action) => {
+					return action.metric_type_id === metricType.id;
+				})
+				.map((action) => {
+					return action.metric_value;
+				}),
+			0.0001
+		);
+		minMaxValues[metricType.id] = { min, max };
+	});
+
 	const compositeScores: number[] = [];
 
 	// loop through nudge recipients
@@ -48,20 +84,24 @@ export const load = (async ({ params, fetch }) => {
 		let compositeScore = 0;
 
 		// loop through actions after nudge and calculate composite score of metric_value * metric_type_weight
+		// composite score should be normalized to 0-1 based on min and max values
 		actionsAfterNudge.forEach((action) => {
 			const metricTypeWeight = configuration.MetricTypeWeight.find((metricTypeWeight) => {
 				return metricTypeWeight.metric_type_id === action.metric_type_id;
 			});
 			const metricValue = action.metric_value;
-			compositeScore += metricValue * metricTypeWeight.weight;
+			const min = minMaxValues[action.metric_type_id].min;
+			const max = minMaxValues[action.metric_type_id].max;
+			const normalizedMetricValue = (metricValue - min) / (max - min);
+			compositeScore += normalizedMetricValue * metricTypeWeight.weight;
 
 			// get time difference between nudge and action
 			const timeDifference: number =
-			new Date(action.created_at).getTime() - new Date(nudgeRecipient.created_at).getTime();
+				new Date(action.created_at).getTime() - new Date(nudgeRecipient.created_at).getTime();
 
-			compositeScore += 1/(timeDifference * configuration.decision_time_weight);
+			compositeScore += 1 / (timeDifference * configuration.decision_time_weight);
 		});
-		compositeScore = compositeScore / (actionsAfterNudge.length*2);
+		compositeScore = compositeScore / (actionsAfterNudge.length * 2);
 		compositeScores.push(compositeScore);
 	});
 
@@ -139,6 +179,32 @@ export const actions = {
 	generate: async ({ params, fetch }) => {
 		const response = await fetch(`/api/configurations/${params.id}/generate`, {
 			method: 'POST'
+		});
+		if (!response.ok) {
+			return {
+				success: false
+			};
+		}
+		return {
+			success: true
+		};
+	},
+	updateNudgeeWeights: async ({ request, params, fetch }) => {
+		const data = await request.formData();
+		const effectiveness = data.get('effectiveness') as string;
+		const nudgee_id = data.get('nudgee') as string;
+		const nudge_id = data.get('nudge') as string;
+
+		const response = await fetch(`/api/configurations/${params.id}/nudgee-weights`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				effectiveness,
+				nudgee_id,
+				nudge_id
+			})
 		});
 		if (!response.ok) {
 			return {
