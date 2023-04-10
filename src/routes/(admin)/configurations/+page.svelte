@@ -23,6 +23,7 @@
 				<tr class="">
 					<th scope="col" class="py-3 px-6"> Name </th>
 					<th scope="col" class="py-3 px-6"> Algorithm</th>
+					<th scope="col" class="py-3 px-6"> Generate</th>
 					<th scope="col" class="py-3 px-6"> Start datetime</th>
 					<th scope="col" class="py-3 px-6"> End datetime</th>
 					<th scope="col" class="py-3 px-6" />
@@ -34,12 +35,13 @@
 						<td class="py-4 px-6" colspan="6"> No configurations found </td>
 					</tr>
 				{/if}
-				{#each data.configurations as { id, name, algorithm, start_datetime, end_datetime }}
+				{#each data.configurations as { id, name, algorithm, generate, start_datetime, end_datetime }}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
 							{name}
 						</th>
 						<td class="py-4 px-6"> {algorithm} </td>
+						<td class="py-4 px-6"> {generate} </td>
 						<td class="py-4 px-6"> {start_datetime} </td>
 						<td class="py-4 px-6"> {end_datetime} </td>
 						<td class="py-4 px-6">

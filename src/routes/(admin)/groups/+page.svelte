@@ -22,6 +22,7 @@
 			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700">
 				<tr class="">
 					<th scope="col" class="py-3 px-6"> Name </th>
+					<th scope="col" class="py-3 px-6"> Control </th>
 					<th scope="col" class="py-3 px-6"> Nudgees Count</th>
 					<th scope="col" class="py-3 px-6" />
 				</tr>
@@ -32,11 +33,12 @@
 						<td class="py-4 px-6" colspan="3"> No groups found </td>
 					</tr>
 				{/if}
-				{#each data.groups as { id, name, NudgeeGroup }}
+				{#each data.groups as { id, name,control, NudgeeGroup }}
 					<tr class="border-b bg-white ">
 						<th scope="row" class="whitespace-nowrap py-4 px-6 font-medium text-gray-900">
 							{name}
 						</th>
+						<td class="py-4 px-6"> {control} </td>
 						<td class="py-4 px-6"> {Object.keys(NudgeeGroup).length} </td>
 						<td class="py-4 px-6">
 							<a href="/groups/{id}" class="text-blue-600 hover:underline">View more</a>

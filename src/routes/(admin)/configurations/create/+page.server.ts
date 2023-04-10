@@ -1,12 +1,15 @@
 import type { Actions, PageServerLoad } from './$types';
-import type { ComponentType, Group } from '@prisma/client';
+import type { ComponentType, Group, MetricType } from '@prisma/client';
 
 export const load = (async ({ fetch }) => {
 	const response = await fetch('/api/components');
 	const componentTypes: ComponentType[] = await response.json();
 	const responseGroups = await fetch('/api/groups');
 	const groups: Group[] = await responseGroups.json();
-	return { componentTypes, groups };
+	const responseMetrics = await fetch('/api/metrics');
+	const metricTypes: MetricType[] = await responseMetrics.json();
+
+	return { componentTypes, groups, metricTypes };
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -16,6 +19,9 @@ export const actions = {
 		const start_datetime = data.get('start_datetime');
 		const end_datetime = data.get('end_datetime');
 		const algorithm = data.get('algorithm');
+		const decision_time_weight = parseFloat(data.get('decision_time_weight') as string);
+		const metric_types = data.getAll('metric_types');
+		const metric_type_weights = data.getAll('metric_type_weights') as string[];
 		const prompt_types = data.getAll('prompt[type][]');
 		const prompt_contents = data.getAll('prompt[content][]');
 		const groups = data.getAll('groups');
@@ -37,6 +43,11 @@ export const actions = {
 				success: false
 			};
 		}
+		// zip the metric types and weights
+		const metric_type_weights_zipped = metric_types.map((type, index) => ({
+			metric_type_id: type,
+			weight: parseFloat(metric_type_weights[index])
+		}));
 
 		const deconstructed_prompt = prompt_types.map((type, index) => ({
 			type,
@@ -57,7 +68,9 @@ export const actions = {
 				generate_model,
 				algorithm,
 				deconstructed_prompt,
-				groups
+				decision_time_weight,
+				groups,
+				metric_type_weights_zipped
 			})
 		});
 

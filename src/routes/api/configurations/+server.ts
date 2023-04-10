@@ -13,7 +13,9 @@ export const GET = (async () => {
 						}
 					}
 				}
-			}
+			},
+			MetricTypeWeight: true,
+			NudgeeWeights: true
 		}
 	});
 	return new Response(JSON.stringify(configurations));
@@ -26,9 +28,11 @@ export const POST = (async ({ request }) => {
 		generate,
 		generate_model,
 		deconstructed_prompt,
+		decision_time_weight,
 		start_datetime,
 		end_datetime,
-		groups
+		groups,
+		metric_type_weights_zipped
 	} = await request.json();
 	if (!name || !algorithm || !start_datetime || !end_datetime) {
 		throw new Error('Missing required parameters');
@@ -41,12 +45,16 @@ export const POST = (async ({ request }) => {
 			generate: generate,
 			generate_model: generate_model,
 			deconstructed_prompt: deconstructed_prompt,
+			decision_time_weight: decision_time_weight,
 			start_datetime: new Date(start_datetime),
 			end_datetime: new Date(end_datetime),
 			GroupConfiguration: {
-				create: groups.map((group: any) => ({
+				create: groups.map((group: string) => ({
 					group_id: group
 				}))
+			},
+			MetricTypeWeight: {
+				createMany: { data: metric_type_weights_zipped }
 			}
 		}
 	});

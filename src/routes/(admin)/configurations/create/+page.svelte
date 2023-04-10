@@ -45,6 +45,20 @@
 						required />
 				</div>
 				<div class="w-full">
+					<label for="weight" class="mb-2 block text-sm font-medium text-gray-900"
+						>Decision Time Weight</label>
+					<input
+						type="number"
+						name="decision_time_weight"
+						id="weight"
+						min="0"
+						max="1"
+						step="0.001"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
+						placeholder="0.556"
+						required />
+				</div>
+				<div class="w-full">
 					<label for="start_datetime" class="mb-2 block text-sm font-medium text-gray-900"
 						>Start datetime</label>
 					<input
@@ -64,7 +78,7 @@
 				</div>
 				<div class="col-span-2">
 					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
-						>Groups you want to nudge</label>
+						>Select groups you want to analyze and whether they should be nudged or not (control group)</label>
 					<ul class="grid w-full gap-6 md:grid-cols-4">
 						{#each data.groups as group}
 							<li>
@@ -73,16 +87,38 @@
 									name="groups"
 									id="group-{group.id}"
 									value={group.id}
-									class="peer hidden"
-									 />
+									class="peer hidden" />
 								<label
 									for="group-{group.id}"
 									class="inline-flex w-full cursor-pointer items-center justify-between rounded-lg border-2 border-gray-200 bg-white p-3 text-gray-500 hover:bg-gray-50 hover:text-gray-600 peer-checked:border-slate-600 peer-checked:text-gray-600">
 									<div class="block">
 										<div class="w-full text-base font-semibold">{group.name}</div>
 										<div class="w-full text-sm">{group.NudgeeGroup.length} nudgees</div>
+										{#if group.control}
+											<div class="w-full text-sm italic">is control group</div>
+										{/if}
 									</div>
 								</label>
+							</li>
+						{/each}
+					</ul>
+				</div>
+				<div class="col-span-2">
+					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
+						>Metric type weights (how much does each metric contribute to nudge effectiveness)</label>
+					<ul class="space-y-4">
+						{#each data.metricTypes as metricType}
+							<li class="flex w-full items-center gap-4">
+								<label for="metric-type-weight-{metricType.id}" class="flex-1"
+									>{metricType.label}</label>
+								<input type="hidden" name="metric_types" value={metricType.id} />
+								<input
+									type="number"
+									min="0"
+									max="1"
+									step="0.001"
+									name="metric_type_weights"
+									class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600" />
 							</li>
 						{/each}
 					</ul>
@@ -105,7 +141,7 @@
 						<select
 							id="generate-model"
 							name="generate_model"
-							class="focus:ring-primary-500 focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+							class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-500 focus:ring-slate-500">
 							<option value="gpt-4">OpenAI GPT-4</option>
 						</select>
 					</div>
@@ -133,7 +169,7 @@
 							<select
 								bind:value={inputRow.type}
 								name="prompt[type][]"
-								class="focus:ring-primary-500 focus:border-primary-500 block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+								class="block rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-500 focus:ring-slate-500">
 								<option value="text">Text</option>
 								<option value="component_type_id">Component Type</option>
 							</select>
@@ -142,13 +178,13 @@
 									bind:value={inputRow.content}
 									type="text"
 									name="prompt[content][]"
-									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900"
+									class="block flex-grow rounded-lg border  border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-500 focus:ring-slate-500"
 									placeholder="Content" />
 							{:else}
 								<select
 									bind:value={inputRow.content}
 									name="prompt[content][]"
-									class="focus:ring-primary-500 focus:border-primary-500 block flex-grow  rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900">
+									class="block flex-grow rounded-lg border  border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-500 focus:ring-slate-500">
 									{#each data.componentTypes as componentType}
 										<option value={componentType.id}>{componentType.label}</option>
 									{/each}

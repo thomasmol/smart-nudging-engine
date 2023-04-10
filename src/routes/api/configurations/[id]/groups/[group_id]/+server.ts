@@ -1,14 +1,12 @@
 import prisma from '$lib/database';
 import type { RequestHandler } from './$types';
 
-export const POST = (async ({ params, request }) => {
+export const POST = (async ({ params }) => {
 	const configuration_id = params.id;
 	const group_id = params.group_id;
-	const { is_nudged } = await request.json();
 
 	const response = await prisma.groupConfiguration.create({
 		data: {
-			is_nudged,
 			configuration_id,
 			group_id
 		}
@@ -17,14 +15,12 @@ export const POST = (async ({ params, request }) => {
 	return new Response(JSON.stringify(response));
 }) satisfies RequestHandler;
 
-export const PUT = (async ({ params, request }) => {
+export const PUT = (async ({ params }) => {
 	const configuration_id = params.id;
 	const group_id = params.group_id;
-	const { is_nudged } = await request.json();
 
 	const response = await prisma.groupConfiguration.update({
 		data: {
-			is_nudged,
 			configuration_id,
 			group_id
 		},

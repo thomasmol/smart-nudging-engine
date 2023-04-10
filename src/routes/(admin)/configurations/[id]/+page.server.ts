@@ -1,4 +1,11 @@
-import type { ComponentType, Configuration } from '@prisma/client';
+import type {
+	Action,
+	ComponentType,
+	Configuration,
+	MetricType,
+	Nudge,
+	NudgeRecipient
+} from '@prisma/client';
 import { redirect } from '@sveltejs/kit';
 import type { Actions, PageServerLoad } from './$types';
 
@@ -6,9 +13,102 @@ export const load = (async ({ params, fetch }) => {
 	const response = await fetch(`/api/configurations/${params.id}`);
 	const configuration: Configuration = await response.json();
 
+	const responseMetricTypes = await fetch(`/api/metrics`);
+	const metricTypes: MetricType[] = await responseMetricTypes.json();
+
+	// calculate effectiveness for each nudge
+	const actions: Action[] = configuration.GroupConfiguration.reduce((acc, groupConfiguration) => {
+		return acc.concat(
+			groupConfiguration.Group.NudgeeGroup.reduce((acc, nudgeeGroup) => {
+				return acc.concat(
+					nudgeeGroup.Nudgee.Action.reduce((acc, action) => {
+						return acc.concat(action);
+					}, [])
+				);
+			}, [])
+		);
+	}, []);
+	const nudgeRecipients: NudgeRecipient[] = configuration.GroupConfiguration.reduce(
+		(acc, groupConfiguration) => {
+			return acc.concat(
+				groupConfiguration.Group.NudgeeGroup.reduce((acc, nudgeeGroup) => {
+					return acc.concat(
+						nudgeeGroup.Nudgee.NudgeRecipient.reduce((acc, nudgeRecipient) => {
+							return acc.concat(nudgeRecipient);
+						}, [])
+					);
+				}, [])
+			);
+		},
+		[]
+	);
+
+	// get min and max values for each metric_types metric_value
+	const minMaxValues: Record<string, { min: number; max: number }> = {};
+	metricTypes.forEach((metricType) => {
+		const min = Math.min(
+			...actions
+				.filter((action) => {
+					return action.metric_type_id === metricType.id;
+				})
+				.map((action) => {
+					return action.metric_value;
+				}),
+			0.0001
+		);
+		const max = Math.max(
+			...actions
+				.filter((action) => {
+					return action.metric_type_id === metricType.id;
+				})
+				.map((action) => {
+					return action.metric_value;
+				}),
+			0.0001
+		);
+		minMaxValues[metricType.id] = { min, max };
+	});
+
+	const compositeScores: number[] = [];
+
+	// loop through nudge recipients
+	nudgeRecipients.forEach((nudgeRecipient) => {
+		// get all actions for this nudge recipient where the date of the action is after the date of the nudge
+		const actionsAfterNudge = actions.filter((action) => {
+			return (
+				action.nudgee_id === nudgeRecipient.nudgee_id &&
+				action.created_at > nudgeRecipient.created_at
+			);
+		});
+
+		let compositeScore = 0;
+
+		// loop through actions after nudge and calculate composite score of metric_value * metric_type_weight
+		// composite score should be normalized to 0-1 based on min and max values
+		actionsAfterNudge.forEach((action) => {
+			const metricTypeWeight = configuration.MetricTypeWeight.find((metricTypeWeight) => {
+				return metricTypeWeight.metric_type_id === action.metric_type_id;
+			});
+			const metricValue = action.metric_value;
+			const min = minMaxValues[action.metric_type_id].min;
+			const max = minMaxValues[action.metric_type_id].max;
+			const normalizedMetricValue = (metricValue - min) / (max - min);
+			compositeScore += normalizedMetricValue * metricTypeWeight.weight;
+
+			// get time difference between nudge and action
+			const timeDifference: number =
+				new Date(action.created_at).getTime() - new Date(nudgeRecipient.created_at).getTime();
+
+			compositeScore += 1 / (timeDifference * configuration.decision_time_weight);
+		});
+		compositeScore = compositeScore / (actionsAfterNudge.length * 2);
+		compositeScores.push(compositeScore);
+	});
+
 	const responseComponents = await fetch('/api/components');
-	const componentTypes : ComponentType[] = await responseComponents.json();
-	return { configuration, componentTypes };
+	const componentTypes: ComponentType[] = await responseComponents.json();
+
+	return { configuration, componentTypes, compositeScores };
 }) satisfies PageServerLoad;
 
 export const actions = {
@@ -19,7 +119,10 @@ export const actions = {
 		const start_datetime = data.get('start_datetime');
 		const end_datetime = data.get('end_datetime');
 		const algorithm = data.get('algorithm');
+		const decision_time_weight = parseFloat(data.get('decision_time_weight') as string);
 		const groups = data.getAll('groups');
+		const metric_types = data.getAll('metric_types');
+		const metric_type_weights = data.getAll('metric_type_weights') as string[];
 		const prompt_types = data.getAll('prompt[type][]');
 		const prompt_contents = data.getAll('prompt[content][]');
 		const generate = data.has('generate');
@@ -32,6 +135,11 @@ export const actions = {
 		const deconstructed_prompt = prompt_types.map((type, index) => ({
 			type,
 			content: prompt_contents[index]
+		}));
+		// zip the metric types and weights
+		const metric_type_weights_zipped = metric_types.map((type, index) => ({
+			metric_type_id: type,
+			weight: parseFloat(metric_type_weights[index])
 		}));
 
 		const response = await fetch(`/api/configurations/${id}`, {
@@ -47,7 +155,9 @@ export const actions = {
 				generate_model,
 				algorithm,
 				deconstructed_prompt,
-				groups
+				decision_time_weight,
+				groups,
+				metric_type_weights_zipped
 			})
 		});
 
@@ -65,5 +175,44 @@ export const actions = {
 			method: 'DELETE'
 		});
 		throw redirect(303, '/configurations');
+	},
+	generate: async ({ params, fetch }) => {
+		const response = await fetch(`/api/configurations/${params.id}/generate`, {
+			method: 'POST'
+		});
+		if (!response.ok) {
+			return {
+				success: false
+			};
+		}
+		return {
+			success: true
+		};
+	},
+	updateNudgeeWeights: async ({ request, params, fetch }) => {
+		const data = await request.formData();
+		const effectiveness = data.get('effectiveness') as string;
+		const nudgee_id = data.get('nudgee') as string;
+		const nudge_id = data.get('nudge') as string;
+
+		const response = await fetch(`/api/configurations/${params.id}/nudgee-weights`, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				effectiveness,
+				nudgee_id,
+				nudge_id
+			})
+		});
+		if (!response.ok) {
+			return {
+				success: false
+			};
+		}
+		return {
+			success: true
+		};
 	}
 } satisfies Actions;

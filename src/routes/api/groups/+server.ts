@@ -16,14 +16,15 @@ export const GET = (async () => {
 }) satisfies RequestHandler;
 
 export const POST = (async ({ request }) => {
-	const { name } = await request.json();
-	if (!name) {
+	const { name , control} = await request.json();
+	if (!name || control == null) {
 		throw new Error('Missing required params');
 	}
 
 	const group: Group = await prisma.group.create({
 		data: {
-			name
+			name,
+			control
 		}
 	});
 	return new Response(JSON.stringify(group));

@@ -13,8 +13,9 @@ export const actions = {
 	update: async ({ request, params, fetch }) => {
 		const data = await request.formData();
 		const name = data.get('name');
+		const control = data.has('control');
 		const id = params.id;
-		if (!name || !id) {
+		if (!name || !id || control == null) {
 			return {
 				success: false
 			};
@@ -27,7 +28,8 @@ export const actions = {
 			},
 			body: JSON.stringify({
 				id,
-				name
+				name,
+				control
 			})
 		});
 
