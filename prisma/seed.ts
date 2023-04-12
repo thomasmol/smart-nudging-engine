@@ -192,16 +192,13 @@ const main = async () => {
 
 	const configurations: Configuration[] = [];
 	const deconstructedPrompt = [
-		{ type: 'text', content: 'Create a nudge that will encourage people to' },
-		{ type: 'component_type_id', content: componentTypes[3].id },
-		{ type: 'text', content: 'at the time of' },
-		{ type: 'component_type_id', content: componentTypes[2].id }
+		{ type: 'text', content: 'Create a nudge that will encourage people to' }
 	];
 	for (let i = 0; i < 2; i++) {
 		const configuration = await prisma.configuration.create({
 			data: {
 				name: 'Example Configuration ' + i,
-				algorithm: faker.helpers.arrayElement(['algorithm1', 'algorithm2', 'algorithm3']),
+				algorithm: 'Basic Algorithm',
 				generate: true,
 				generate_model: 'GPT-4',
 				decision_time_weight: faker.datatype.float({ min: 0.1, max: 1 }),

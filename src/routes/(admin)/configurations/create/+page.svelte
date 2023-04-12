@@ -36,13 +36,12 @@
 				<div class="w-full">
 					<label for="algorithm" class="mb-2 block text-sm font-medium text-gray-900"
 						>Algorithm</label>
-					<input
-						type="text"
-						name="algorithm"
+					<select
 						id="algorithm"
-						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
-						placeholder="Algorithm"
-						required />
+						name="algorithm"
+						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-500 focus:ring-slate-500">
+						<option value="Basic Algorithm">Basic Algorithm</option>
+					</select>
 				</div>
 				<div class="w-full">
 					<label for="weight" class="mb-2 block text-sm font-medium text-gray-900"
@@ -78,7 +77,8 @@
 				</div>
 				<div class="col-span-2">
 					<label for="groups" class="mb-2 block text-sm font-medium text-gray-900"
-						>Select groups you want to analyze and whether they should be nudged or not (control group)</label>
+						>Select groups you want to analyze and whether they should be nudged or not (control
+						group)</label>
 					<ul class="grid w-full gap-6 md:grid-cols-4">
 						{#each data.groups as group}
 							<li>
