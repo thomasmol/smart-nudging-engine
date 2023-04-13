@@ -44,7 +44,7 @@
 					<label for="metricValue" class="mb-2 block text-sm font-medium text-gray-900"
 						>Metric value</label>
 					<input
-						type="text"
+						type="number"
 						name="metric_value"
 						id="metricValue"
 						class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-slate-600 focus:ring-slate-600"
