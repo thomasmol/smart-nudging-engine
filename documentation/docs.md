@@ -3,7 +3,7 @@ The API documentation can be found [here](API.md).
 
 Please read the overview of all the entities in the database which can be found [here](database.md).
 
-## Concepts
+# Concepts
 
 ### Nudgee
 
@@ -41,7 +41,7 @@ Please read the overview of all the entities in the database which can be found 
 - Configurations have relations to *groups* and allow users to set weights for metric types and decision time.
 - Users can also select the model and algorithm for nudge generation and optimization.
 
-## How to use the Smart Nudging Engine
+# How to use the Smart Nudging Engine
 
 The Smart Nudging Engine can be used to do three main things:
 
@@ -80,31 +80,69 @@ To add data to the database, follow this order:
 
 The order for pre-made or generated nudges, config, or nudges may vary. After completing these steps, add actions and assign nudges to nudgees.
 
-## Example Usages
+# Example Usages
 
-The following examples demonstrate how to use the Smart Nudging Engine:
+## Real-World Example 1: Encouraging Healthy Eating
 
-### Example 1: Measuring effectiveness of a single nudge
+Imagine a health app that wants to encourage users to eat healthier. The app will send nudges to its users containing tips, reminders, or motivational messages. In this scenario, the Smart Nudging Engine can be used to optimize the nudges for each user.
 
-1. Provide the engine with a single nudge (e.g., a text message encouraging physical activity).
-2. The engine measures the nudge's effectiveness using metrics like:
-    - Click rate
-    - View time
-    - Self-report
-3. The engine provides insights on the nudge's impact, helping users decide whether to continue using it or make changes.
+### Component Types and Values
 
-### Example 2: Finding the optimal nudge among multiple nudges
+- Component Types:
+    1. Content type: 'text', 'image_url'
+    2. Message theme: 'tip', 'reminder', 'motivation'
+- Component Values:
+    1. Text tips, reminders, and motivational messages
+    2. Image URLs for healthy food, workout images, or motivational quotes
 
-1. Provide the engine with multiple nudges (e.g., text messages, images, and videos promoting healthy eating).
-2. The engine measures the effectiveness of each nudge using metrics.
-3. The engine finds the optimal nudge for each nudgee or group:
-    - Users can do this **manually** by assigning nudges to different groups and using metric values and actions to calculate effectiveness.
-    - Alternatively, users can do this **automatically** using weights and algorithms like recommender systems and reinforcement learning.
+### Metric Types and Values
 
-### Example 3: Generating and finding the optimal nudge using components
+- Metric Types:
+    1. Click rate
+    2. Time spent viewing the nudge
+    3. Self-reported healthy meal count
+- Metric Values:
+    1. Number of clicks
+    2. Seconds spent viewing the nudge
+    3. Number of healthy meals reported by the user
 
-1. Provide the engine with multiple nudge components (e.g., text snippets, images, and icons related to stress management).
-2. The engine generates different nudges using models like GPT-4, Dall-E, and Stable Diffusion.
-3. The engine measures the effectiveness of each generated nudge using metrics.
-4. The engine finds the optimal nudge for each nudgee or group using algorithms.
+### Other Concepts
+
+- Nudgees: App users
+- Groups: Users can be grouped based on age, gender, or other demographics
+- Configuration: Select appropriate models and algorithms for nudge generation and optimization
+- Actions: Users clicking on nudges, viewing nudges, and reporting healthy meals
+
+## Real-World Example 2: Reducing Energy Consumption
+
+A utility company wants to help its customers reduce energy consumption. They plan to send nudges to customers with energy-saving tips, reminders to turn off appliances, and messages to encourage using energy-efficient products.
+
+### Component Types and Values
+
+- Component Types:
+    1. Content type: 'text', 'image_url'
+    2. Message theme: 'tip', 'reminder', 'encouragement'
+- Component Values:
+    1. Text tips, reminders, and encouragement messages
+    2. Image URLs for energy-saving practices, reminders, or energy-efficient products
+
+### Metric Types and Values
+
+- Metric Types:
+    1. Click rate
+    2. Time spent viewing the nudge
+    3. Self-reported energy-saving actions
+    4. Energy consumption data (if available)
+- Metric Values:
+    1. Number of clicks
+    2. Seconds spent viewing the nudge
+    3. Number of energy-saving actions reported by the user
+    4. kWh consumed by the user
+
+### Other Concepts
+
+- Nudgees: Utility company customers
+- Groups: Customers can be grouped based on location, energy consumption levels, or demographics
+- Configuration: Select appropriate models and algorithms for nudge generation and optimization
+- Actions: Users clicking on nudges, viewing nudges, and reporting energy-saving actions
 
