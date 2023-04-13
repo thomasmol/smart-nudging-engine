@@ -15,13 +15,14 @@ export const actions = {
 		const data = await request.formData();
 		const nudgee_id = data.get('nudgee_id');
 		const metric_type_id = data.get('metric_type_id');
-		const metric_value = data.get('metric_value');
-		const created_at = data.get('created_at');
+		const metric_value = data.get('metric_value') as string;
+		const created_at = data.get('created_at') as string;
 		if (!nudgee_id || !metric_type_id || !metric_value) {
 			return {
 				success: false
 			};
 		}
+
 		const response = await fetch(`/api/actions`, {
 			method: 'POST',
 			headers: {
@@ -30,8 +31,8 @@ export const actions = {
 			body: JSON.stringify({
 				nudgee_id,
 				metric_type_id,
-				metric_value,
-				created_at
+				metric_value: metric_value ? parseInt(metric_value) : 0,
+				created_at: new Date(created_at)
 			})
 		});
 
