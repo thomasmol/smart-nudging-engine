@@ -2,16 +2,16 @@
 
 View [live](https://smart-nudging-engine.vercel.app) demo
 
-This is the codebase of the smart nudging engine as part of a master's thesis of the Business Informatics programme at the Utrecht University in 2022. 
+This is the codebase of the smart nudging engine as part of a master's thesis of the Business Informatics programme at the Utrecht University in 2022-2023.
 
 This readme will be updated with instructions on how to install, use and extend this project.
 
 Project stack:
-* [SvelteKit](https://kit.svelte.dev) (webapp framework)
-* [Prisma](https://prisma.io) (ORM)
-* [PostgreSQL](https://postgresql.org) (database)
-* [Nodejs](https://nodejs.org) (runtime env)
 
+- [SvelteKit](https://kit.svelte.dev) (webapp framework)
+- [Prisma](https://prisma.io) (ORM)
+- [PostgreSQL](https://postgresql.org) (database)
+- [Nodejs](https://nodejs.org) (runtime env)
 
 ## Developing
 
@@ -35,3 +35,18 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 > To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+
+## Documentation
+
+View the [documentation](/documentation/docs.md) for the Smart Nudging Engine.
+
+
+## Contributing
+Contributions are welcome! Open an issue or a pull request.
+
+## License
+[Apache License](LICENSE)
+
+## Citation
+[Use this citation](CITATION.cff)
