@@ -1,4 +1,5 @@
 <script lang="ts">
+	import InformationCircle from '$lib/icons/InformationCircle.svelte';
 	import type { PageData } from './$types';
 
 	export let data: PageData;
@@ -15,6 +16,22 @@
 				href="/components/create"
 				class="inline-block rounded bg-blue-600 px-4 py-2 align-middle text-lg font-bold text-white shadow-sm"
 				>Add new component type</a>
+		</div>
+	</div>
+	<div class="my-4 rounded-lg border bg-white p-2">
+		<div class="flex items-center gap-2">
+			<span class="text-xl text-blue-700"> <InformationCircle /></span>
+			<h3 class="text-lg font-semibold ">What are Components?</h3>
+		</div>
+		<div>
+			<ul class="mt-2 list-inside list-disc space-y-2 px-2 text-slate-700">
+				<li>Component Types are the definitions of nudge components that make up a nudge.</li>
+				<li>Component types have values that indicate an instance of a component type.</li>
+				<li>
+					For example, a "Time" component type might have a value of "Morning" or "Afternoon".
+				</li>
+				<li>You can manually add component types and values or use the API.</li>
+			</ul>
 		</div>
 	</div>
 	<div class="relative overflow-x-auto rounded-lg border">
