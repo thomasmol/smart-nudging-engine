@@ -2,6 +2,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import type { Nudge } from '@prisma/client';
 	import type { PageData } from './$types';
+	import InformationCircle from '$lib/icons/InformationCircle.svelte';
 
 	export let data: PageData;
 </script>
@@ -19,7 +20,30 @@
 				>Add new nudge</a>
 		</div>
 	</div>
-
+	<div class="my-4 rounded-lg border bg-white p-2">
+		<div class="flex items-center gap-2">
+			<span class="text-xl text-blue-700"> <InformationCircle /></span>
+			<h3 class="text-lg font-semibold ">What are Nudges?</h3>
+		</div>
+		<div>
+			<ul class="mt-2 list-inside list-disc space-y-2 px-2 text-slate-700">
+				<li>Nudges are used to influence a nudgee to make a certain decision.</li>
+				<li>They have a content type, like "text" or "image_url", and the actual content.</li>
+				<li>
+					They can be pre-made by you or an AI model can auto generate them based on a model, prompt
+					and component types.
+				</li>
+				<li>Nudges are assigned to nudgees in a configuration.</li>
+				<li>
+					Nudges have related component values, which are used to optimize nudge effectiveness.
+				</li>
+				<li>
+					You can manually add nudges, auto generate them in a configuration, or use the API to add
+					them.
+				</li>
+			</ul>
+		</div>
+	</div>
 	<div class="relative overflow-x-auto rounded-lg border">
 		<table class="w-full text-left text-sm text-gray-500 ">
 			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700 ">
@@ -34,9 +58,7 @@
 			<tbody>
 				{#if data.nudges.length === 0}
 					<tr class="border-b bg-white ">
-						<td class="py-4 px-6" colspan="5">
-							No nudges found
-						</td>
+						<td class="py-4 px-6" colspan="5"> No nudges found </td>
 					</tr>
 				{/if}
 				{#each data.nudges as nudge}

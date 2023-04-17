@@ -2,6 +2,7 @@
 	import { invalidateAll } from '$app/navigation';
 	import type { Nudgee } from '@prisma/client';
 	import type { PageData } from './$types';
+	import InformationCircle from '$lib/icons/InformationCircle.svelte';
 
 	export let data: PageData;
 </script>
@@ -19,7 +20,21 @@
 				>Add Nudgee</a>
 		</div>
 	</div>
-
+	<div class="my-4 rounded-lg border bg-white p-2">
+		<div class="flex items-center gap-2">
+			<span class="text-xl text-blue-700"> <InformationCircle /></span>
+			<h3 class="text-lg font-semibold ">What are Nudgees?</h3>
+		</div>
+		<div>
+			<ul class="mt-2 list-inside list-disc space-y-2 px-2 text-slate-700">
+				<li>A nudgee is an individual, e.g. a user of your app/system or a participant of your experiment.</li>
+				<li>
+					They have a unique id and a profile, which can contain any data you want. (In JSON format)
+				</li>
+				<li>You can manually add nudgees or use the API.</li>
+			</ul>
+		</div>
+	</div>
 	<div class="relative overflow-x-auto rounded-lg border">
 		<table class="w-full text-left text-sm text-gray-500 ">
 			<thead class="border-b bg-gray-50 text-sm uppercase text-gray-700 ">
@@ -32,9 +47,7 @@
 			<tbody>
 				{#if data.nudgees.length === 0}
 					<tr class="border-b bg-white ">
-						<td class="py-4 px-6" colspan="5">
-							No nudgees found
-						</td>
+						<td class="py-4 px-6" colspan="5"> No nudgees found </td>
 					</tr>
 				{/if}
 				{#each data.nudgees as nudgee}
