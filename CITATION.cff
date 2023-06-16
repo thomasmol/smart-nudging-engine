@@ -10,6 +10,14 @@ authors:
     family-names: Mol
     email: email@thomasmol.com
     affiliation: Utrecht University
+  - given-names: Hannah
+    family-names: Hauptmann
+    email: h.j.hauptmann@uu.nl
+    affiliation: Utrecht University
+  - given-names: Slinger
+    family-names: Jansen
+    email: slinger.jansen@uu.nl
+    affiliation: Utrecht University
 version: 0.1
 date-released: "2022-09-19"
 license: Apache-2.0
